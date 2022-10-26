@@ -2,9 +2,6 @@ import UIKit
 import SnapKit
 
 final class ListViewController: UIViewController {
-
-    var didSetupConstraints = false
-    let cellId = "cell id"
     
     let heroArray = HeroArray()
     
@@ -77,7 +74,7 @@ final class ListViewController: UIViewController {
     }
 
     private func registerCollectionViewCells() {
-        collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: String(describing: CollectionViewCell.self))
     }
 }
 
@@ -88,7 +85,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? CollectionViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CollectionViewCell.self), for: indexPath) as? CollectionViewCell else {
             return .init()
         }
         cell.setup(heroData: heroArray.get(indexPath.item))
