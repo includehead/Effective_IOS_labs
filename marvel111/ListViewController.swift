@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class ListViewController: UIViewController {
+final class ListViewController: UIViewController {
 
     var didSetupConstraints = false
     let cellId = "cell id"
