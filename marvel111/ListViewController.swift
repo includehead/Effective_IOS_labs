@@ -27,7 +27,7 @@ class ListViewController: UIViewController {
     lazy var collectionView: UICollectionView = {
         let layout = PagingCollectionViewLayout()
         layout.itemSize = Constants.collectionViewLayoutItemSize
-        layout.minimumLineSpacing = Constants.collectionViewLayoutMinimumLineSpasing
+        layout.minimumLineSpacing = Constants.itemSpasing
         layout.scrollDirection = .horizontal
         layout.sectionInset = Constants.collectionViewLayoutInset
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
