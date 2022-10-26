@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct HeroData {
+struct HeroModel {
     let name: String
     let image: UIImage?
     let color: UIColor

@@ -6,6 +6,8 @@ class ListViewController: UIViewController {
     var didSetupConstraints = false
     let cellId = "cell id"
     
+    let heroArray = HeroArray()
+    
     let background = BackgroundView(frame: .zero)
     
     let marvelLogo: UIImageView = {
@@ -46,7 +48,7 @@ class ListViewController: UIViewController {
         view.addSubview(chooseYourHeroText)
         registerCollectionViewCells()
         view.addSubview(collectionView)
-        background.setTriangleColor(heroArray[0].color)
+        background.setTriangleColor(heroArray.get(0).color)
         setLayout()
     }
 
@@ -82,14 +84,14 @@ class ListViewController: UIViewController {
 extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return heroArray.count
+        return heroArray.count()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? CollectionViewCell else {
             return .init()
         }
-        cell.setup(heroData: heroArray[indexPath.item])
+        cell.setup(heroData: heroArray.get(indexPath.item))
         return cell
     }
     
@@ -98,7 +100,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         let centerPoint = CGPoint(x: scrollView.frame.size.width / 2 + scrollView.contentOffset.x,
                                   y: scrollView.frame.size.height / 2 + scrollView.contentOffset.y)
         if let indexPath = collectionView.indexPathForItem(at: centerPoint) {
-            background.setTriangleColor(heroArray[indexPath.row].color)
+            background.setTriangleColor(heroArray.get(indexPath.row).color)
         }
     }
 }

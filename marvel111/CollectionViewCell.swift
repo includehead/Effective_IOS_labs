@@ -29,7 +29,7 @@ final class CollectionViewCell: UICollectionViewCell {
         setUpLayout()
     }
     
-    func setup(heroData: HeroData) {
+    func setup(heroData: HeroModel) {
         imageView.image = heroData.image ?? .init()
         text.text = heroData.name
     }
