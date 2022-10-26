@@ -15,10 +15,10 @@ final class CollectionViewCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         return imageView
     }()
-    let text: UILabel = {
+    private let text: UILabel = {
         let text = UILabel()
         text.font = UIFont(name: "Roboto-Black", size: 24)
-        text.textColor = UIColor.white
+        text.textColor = .white
         text.shadowColor = .black
         text.shadowOffset = CGSize(width: 5, height: 5)
         return text
@@ -30,8 +30,8 @@ final class CollectionViewCell: UICollectionViewCell {
     }
     
     func setup(heroData: HeroData) {
-        self.imageView.image = heroData.image ?? .init()
-        self.text.text = heroData.name
+        imageView.image = heroData.image ?? .init()
+        text.text = heroData.name
     }
     
     private func setUpLayout() {
