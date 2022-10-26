@@ -3,17 +3,17 @@ import SnapKit
 
 final class ListViewController: UIViewController {
     
-    let heroArray = HeroArray()
+    private let heroArray = HeroArray()
     
-    let background = BackgroundView(frame: .zero)
+    private let background = BackgroundView(frame: .zero)
     
-    let marvelLogo: UIImageView = {
+    private let marvelLogo: UIImageView = {
         let logo = UIImageView()
         logo.image = UIImage(named: "marvel_logo")
         return logo
     }()
 
-    let chooseYourHeroText: UILabel = {
+    private let chooseYourHeroText: UILabel = {
         let text = UILabel()
         text.text = "Choose your hero"
         text.textColor = .white
@@ -23,7 +23,7 @@ final class ListViewController: UIViewController {
         return text
     }()
 
-    lazy var collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = PagingCollectionViewLayout()
         layout.itemSize = Constants.collectionViewLayoutItemSize
         layout.minimumLineSpacing = Constants.itemSpasing
