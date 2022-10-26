@@ -15,13 +15,13 @@ final class CollectionViewCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         return imageView
     }()
-    private let text: UILabel = {
-        let text = UILabel()
-        text.font = UIFont(name: "Roboto-Black", size: 24)
-        text.textColor = .white
-        text.shadowColor = .black
-        text.shadowOffset = CGSize(width: 5, height: 5)
-        return text
+    private let textLabel: UILabel = {
+        let textLabel = UILabel()
+        textLabel.font = UIFont(name: "Roboto-Black", size: 24)
+        textLabel.textColor = .white
+        textLabel.shadowColor = .black
+        textLabel.shadowOffset = CGSize(width: 5, height: 5)
+        return textLabel
     }()
     
     override init(frame: CGRect) {
@@ -31,13 +31,13 @@ final class CollectionViewCell: UICollectionViewCell {
     
     func setup(heroData: HeroModel) {
         imageView.image = heroData.image ?? .init()
-        text.text = heroData.name
+        textLabel.text = heroData.name
     }
     
     private func setUpLayout() {
         addSubview(imageView)
-        addSubview(text)
-        text.snp.makeConstraints {
+        addSubview(textLabel)
+        textLabel.snp.makeConstraints {
             $0.left.equalTo(self.snp.left).offset(20)
             $0.top.equalTo(self.snp.bottom).offset(-50)
         }
