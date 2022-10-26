@@ -60,16 +60,16 @@ final class ListViewController: UIViewController {
         }
         
         chooseYourHeroText.snp.makeConstraints { make in
-            make.centerX.equalTo(marvelLogo)
             make.top.equalTo(marvelLogo.snp.bottom).offset(20)
-            make.size.equalTo(CGSize(width: 300, height: 60))
+            make.left.equalTo(view.snp.left)
+            make.right.equalTo(view.snp.right)
         }
         
         collectionView.snp.makeConstraints { make in
             make.left.equalTo(view.snp.left)
             make.right.equalTo(view.snp.right)
             make.top.equalTo(chooseYourHeroText.snp.bottom).offset(10)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-30)
+            make.bottom.equalTo(view.snp.bottom).offset(-30)
         }
     }
 
