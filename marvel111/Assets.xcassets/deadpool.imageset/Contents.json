@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "deadpool.jpeg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "deadpool.jpeg",
       "idiom" : "universal",
       "scale" : "2x"
     },

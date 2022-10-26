@@ -1,11 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "spider_man.jpg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "spider_man.jpg",
       "idiom" : "universal",
       "scale" : "2x"
     },
