@@ -46,7 +46,7 @@ class ListViewController: UIViewController {
         view.addSubview(chooseYourHeroText)
         registerCollectionViewCells()
         view.addSubview(collectionView)
-        
+        background.setTriangleColor(heroArray[0].color)
         setLayout()
     }
 
