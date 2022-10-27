@@ -15,7 +15,7 @@ struct HeroArray {
         HeroModel(name: "Spider Man", image: UIImage(named: "spider_man"), color: .purple),
         HeroModel(name: "Doctor Strange", image: UIImage(named: "strange"), color: .blue),
         HeroModel(name: "Thor", image: UIImage(named: "thor"), color: .brown),
-        HeroModel(name: "Thanos", image: UIImage(named: "thanos"), color: .cyan),
+        HeroModel(name: "Thanos", image: UIImage(named: "thanos"), color: .cyan)
     ]
     func get(_ index: Int) -> HeroModel {
         return heroArray[index]

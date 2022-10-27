@@ -8,7 +8,7 @@
 import UIKit
 
 final class CollectionViewCell: UICollectionViewCell {
-    
+
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 15.0
@@ -23,17 +23,17 @@ final class CollectionViewCell: UICollectionViewCell {
         textLabel.shadowOffset = CGSize(width: 5, height: 5)
         return textLabel
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpLayout()
     }
-    
+
     func setup(heroData: HeroModel) {
         imageView.image = heroData.image ?? .init()
         textLabel.text = heroData.name
     }
-    
+
     private func setUpLayout() {
         addSubview(imageView)
         addSubview(textLabel)
@@ -45,7 +45,7 @@ final class CollectionViewCell: UICollectionViewCell {
             $0.edges.equalToSuperview()
         }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

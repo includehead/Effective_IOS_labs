@@ -8,12 +8,12 @@
 import UIKit
 
 class HeroCardViewController: UIViewController {
-    
+
     private let textOffset = 30
     private let heroImage = UIImageView()
 
     private let heroNameTextLabel: UILabel = {
-        let heroNameTextLabel = UILabel()        
+        let heroNameTextLabel = UILabel()
         heroNameTextLabel.textColor = .white
         heroNameTextLabel.font = UIFont(name: "Roboto-Black", size: 37)
         return heroNameTextLabel
@@ -43,7 +43,7 @@ class HeroCardViewController: UIViewController {
             $0.bottom.equalTo(heroDescriptionTextLabel.snp.top).offset(-10)
         }
     }
-    
+
     func setup(image: UIImage?, name: String, description: String) {
         heroImage.image = image ?? .init()
         heroNameTextLabel.text = name

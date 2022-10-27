@@ -31,6 +31,7 @@
 		55B9FF582900937F00F64053 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B9FF572900937F00F64053 /* Assets.xcassets */; };
 		55B9FF5B2900937F00F64053 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55B9FF592900937F00F64053 /* LaunchScreen.storyboard */; };
 		55B9FF6C290098C100F64053 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B9FF6B290098C100F64053 /* ListViewController.swift */; };
+		55F9D5362909E2ED00D02DEA /* HeroCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F9D5352909E2ED00D02DEA /* HeroCardViewController.swift */; };
 		F7BDDA9D2906627400D4E7FE /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BDDA9C2906627400D4E7FE /* BackgroundView.swift */; };
 		F7BDDA9F2906764400D4E7FE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BDDA9E2906764400D4E7FE /* Constants.swift */; };
 		F7BDDAA229068BD000D4E7FE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F7BDDAA129068BD000D4E7FE /* SnapKit */; };
@@ -76,6 +77,7 @@
 		55B9FF5A2900937F00F64053 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		55B9FF5C2900937F00F64053 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55B9FF6B290098C100F64053 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		55F9D5352909E2ED00D02DEA /* HeroCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroCardViewController.swift; sourceTree = "<group>"; };
 		F7BDDA9C2906627400D4E7FE /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		F7BDDA9E2906764400D4E7FE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,6 +142,7 @@
 				F7BDDA9E2906764400D4E7FE /* Constants.swift */,
 				55B9FF6B290098C100F64053 /* ListViewController.swift */,
 				554AF2932901D931003CC67A /* CollectionViewCell.swift */,
+				55F9D5352909E2ED00D02DEA /* HeroCardViewController.swift */,
 				F7BDDA9C2906627400D4E7FE /* BackgroundView.swift */,
 				554AF291290179B2003CC67A /* PagingCollectionViewLayout.swift */,
 				55B9FF572900937F00F64053 /* Assets.xcassets */,
@@ -161,6 +164,7 @@
 				55B9FF482900937E00F64053 /* Frameworks */,
 				55B9FF492900937E00F64053 /* Resources */,
 				55B9FF6A2900969A00F64053 /* Embed Frameworks */,
+				55F9D537290A948700D02DEA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -238,6 +242,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		55F9D537290A948700D02DEA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		55B9FF472900937E00F64053 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -251,6 +276,7 @@
 				55B9FF6C290098C100F64053 /* ListViewController.swift in Sources */,
 				554AF2962905A828003CC67A /* HeroModel.swift in Sources */,
 				F7BDDA9F2906764400D4E7FE /* Constants.swift in Sources */,
+				55F9D5362909E2ED00D02DEA /* HeroCardViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

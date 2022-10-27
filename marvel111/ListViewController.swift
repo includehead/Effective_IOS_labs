@@ -2,13 +2,11 @@ import UIKit
 import SnapKit
 
 final class ListViewController: UIViewController {
-    
+
     private let heroArray = HeroArray()
-    
     private let background = BackgroundView(frame: .zero)
-    
     private var currentSelectedItemIndex = 0
-    
+
     private let marvelLogo: UIImageView = {
         let logo = UIImageView()
         logo.image = UIImage(named: "marvel_logo")
@@ -61,13 +59,11 @@ final class ListViewController: UIViewController {
             make.top.equalTo(view).offset(70.0)
             make.size.equalTo(CGSize(width: 140, height: 30))
         }
-        
         chooseYourHeroTextLabel.snp.makeConstraints { make in
             make.top.equalTo(marvelLogo.snp.bottom).offset(20)
             make.left.equalTo(view.snp.left)
             make.right.equalTo(view.snp.right)
         }
-        
         collectionView.snp.makeConstraints { make in
             make.left.equalTo(view.snp.left)
             make.right.equalTo(view.snp.right)
@@ -77,33 +73,37 @@ final class ListViewController: UIViewController {
     }
 
     private func registerCollectionViewCells() {
-        collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: String(describing: CollectionViewCell.self))
+        collectionView.register(CollectionViewCell.self,
+                                forCellWithReuseIdentifier: String(describing: CollectionViewCell.self))
     }
-    
+
     @objc func loadHeroCardView() {
         let heroCardViewController = HeroCardViewController()
         let hero = heroArray.get(currentSelectedItemIndex)
-        heroCardViewController.setup(image: hero.image, name: hero.name, description: "very long description to test string breaking seems like this is enough")
+        heroCardViewController.setup(image: hero.image, name: hero.name,
+                                     description: "very long description to test string breaking seems like")
         navigationController?.pushViewController(heroCardViewController, animated: false)
     }
-    
 }
 
 extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return heroArray.count()
     }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CollectionViewCell.self), for: indexPath) as? CollectionViewCell else {
+
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: String(describing: CollectionViewCell.self),
+            for: indexPath) as? CollectionViewCell else {
             return .init()
         }
         cell.setup(heroData: heroArray.get(indexPath.item))
         cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(loadHeroCardView)))
         return cell
     }
-    
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard scrollView is UICollectionView else { return }
         let centerPoint = CGPoint(x: scrollView.frame.size.width / 2 + scrollView.contentOffset.x,
@@ -114,5 +114,3 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         }
     }
 }
-
-
