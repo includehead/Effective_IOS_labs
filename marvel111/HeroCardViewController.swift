@@ -9,7 +9,6 @@ import UIKit
 
 class HeroCardViewController: UIViewController {
     
-    private let textMargin = 50
     private let textOffset = 30
     private let heroImage = UIImageView()
 
