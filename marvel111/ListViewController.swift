@@ -7,20 +7,22 @@ final class ListViewController: UIViewController {
     
     private let background = BackgroundView(frame: .zero)
     
+    private var currentSelectedItemIndex = 0
+    
     private let marvelLogo: UIImageView = {
         let logo = UIImageView()
         logo.image = UIImage(named: "marvel_logo")
         return logo
     }()
 
-    private let chooseYourHeroText: UILabel = {
-        let text = UILabel()
-        text.text = "Choose your hero"
-        text.textColor = .white
-        text.font = UIFont(name: "Roboto-Black", size: 37)
-        text.textAlignment = .center
-        text.translatesAutoresizingMaskIntoConstraints = false
-        return text
+    private let chooseYourHeroTextLabel: UILabel = {
+        let chooseYourHeroTextLabel = UILabel()
+        chooseYourHeroTextLabel.text = "Choose your hero"
+        chooseYourHeroTextLabel.textColor = .white
+        chooseYourHeroTextLabel.font = UIFont(name: "Roboto-Black", size: 37)
+        chooseYourHeroTextLabel.textAlignment = .center
+        chooseYourHeroTextLabel.translatesAutoresizingMaskIntoConstraints = false
+        return chooseYourHeroTextLabel
     }()
 
     private lazy var collectionView: UICollectionView = {
@@ -40,9 +42,10 @@ final class ListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = ""
         view.addSubview(background)
         view.addSubview(marvelLogo)
-        view.addSubview(chooseYourHeroText)
+        view.addSubview(chooseYourHeroTextLabel)
         registerCollectionViewCells()
         view.addSubview(collectionView)
         background.setTriangleColor(heroArray.get(0).color)
@@ -59,7 +62,7 @@ final class ListViewController: UIViewController {
             make.size.equalTo(CGSize(width: 140, height: 30))
         }
         
-        chooseYourHeroText.snp.makeConstraints { make in
+        chooseYourHeroTextLabel.snp.makeConstraints { make in
             make.top.equalTo(marvelLogo.snp.bottom).offset(20)
             make.left.equalTo(view.snp.left)
             make.right.equalTo(view.snp.right)
@@ -68,7 +71,7 @@ final class ListViewController: UIViewController {
         collectionView.snp.makeConstraints { make in
             make.left.equalTo(view.snp.left)
             make.right.equalTo(view.snp.right)
-            make.top.equalTo(chooseYourHeroText.snp.bottom).offset(10)
+            make.top.equalTo(chooseYourHeroTextLabel.snp.bottom).offset(10)
             make.bottom.equalTo(view.snp.bottom).offset(-30)
         }
     }
@@ -76,6 +79,14 @@ final class ListViewController: UIViewController {
     private func registerCollectionViewCells() {
         collectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: String(describing: CollectionViewCell.self))
     }
+    
+    @objc func loadHeroCardView() {
+        let heroCardViewController = HeroCardViewController()
+        let hero = heroArray.get(currentSelectedItemIndex)
+        heroCardViewController.setup(image: hero.image, name: hero.name, description: "very long description to test string breaking seems like this is enough")
+        navigationController?.pushViewController(heroCardViewController, animated: false)
+    }
+    
 }
 
 extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
@@ -89,6 +100,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             return .init()
         }
         cell.setup(heroData: heroArray.get(indexPath.item))
+        cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(loadHeroCardView)))
         return cell
     }
     
@@ -97,7 +109,10 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         let centerPoint = CGPoint(x: scrollView.frame.size.width / 2 + scrollView.contentOffset.x,
                                   y: scrollView.frame.size.height / 2 + scrollView.contentOffset.y)
         if let indexPath = collectionView.indexPathForItem(at: centerPoint) {
+            currentSelectedItemIndex = indexPath.row
             background.setTriangleColor(heroArray.get(indexPath.row).color)
         }
     }
 }
+
+
