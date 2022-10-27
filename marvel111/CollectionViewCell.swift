@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class CollectionViewCell: UICollectionViewCell {
 
@@ -30,7 +31,21 @@ final class CollectionViewCell: UICollectionViewCell {
     }
 
     func setup(heroData: HeroModel) {
-        imageView.image = heroData.image ?? .init()
+        let processor = DownsamplingImageProcessor(size: self.bounds.size)
+                     |> RoundCornerImageProcessor(cornerRadius: 20)
+        imageView.kf.setImage(
+            with: heroData.imageLink ?? URL.init(string: ""),
+            options: [
+                .processor(processor)
+            ]
+        ) {
+            switch $0 {
+            case .success(let value):
+                NSLog("Task done for: \(value.source.url?.absoluteString ?? "")")
+            case .failure(let error):
+                NSLog("Job failed: \(error.localizedDescription)")
+            }
+        }
         textLabel.text = heroData.name
     }
 

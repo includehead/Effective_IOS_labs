@@ -9,12 +9,12 @@ import UIKit
 
 struct HeroModel {
     let name: String
-    let image: UIImage?
+    let imageLink: URL?
     let color: UIColor
 
-    init(name: String, image: UIImage?, color: UIColor) {
+    init(name: String, image: URL?, color: UIColor) {
         self.name = name
-        self.image = image
+        self.imageLink = image
         self.color = color
     }
 }

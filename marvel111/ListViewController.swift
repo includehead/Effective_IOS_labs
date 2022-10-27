@@ -41,6 +41,7 @@ final class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = ""
+        navigationController?.navigationBar.tintColor = .white
         view.addSubview(background)
         view.addSubview(marvelLogo)
         view.addSubview(chooseYourHeroTextLabel)
@@ -80,7 +81,7 @@ final class ListViewController: UIViewController {
     @objc func loadHeroCardView() {
         let heroCardViewController = HeroCardViewController()
         let hero = heroArray.get(currentSelectedItemIndex)
-        heroCardViewController.setup(image: hero.image, name: hero.name,
+        heroCardViewController.setup(image: hero.imageLink, name: hero.name,
                                      description: "very long description to test string breaking seems like")
         navigationController?.pushViewController(heroCardViewController, animated: false)
     }

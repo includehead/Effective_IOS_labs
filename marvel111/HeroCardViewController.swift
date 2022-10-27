@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class HeroCardViewController: UIViewController {
 
@@ -44,8 +45,8 @@ class HeroCardViewController: UIViewController {
         }
     }
 
-    func setup(image: UIImage?, name: String, description: String) {
-        heroImage.image = image ?? .init()
+    func setup(image: URL?, name: String, description: String) {
+        heroImage.kf.setImage(with: image ?? URL(string: ""))
         heroNameTextLabel.text = name
         heroDescriptionTextLabel.text = description
         setupConstraints()
