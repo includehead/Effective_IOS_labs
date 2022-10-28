@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-class HeroCardViewController: UIViewController {
+final class HeroCardViewController: UIViewController {
 
     private let textOffset = 30
     private let heroImage = UIImageView()

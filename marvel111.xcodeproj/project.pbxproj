@@ -162,11 +162,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55B9FF5F2900937F00F64053 /* Build configuration list for PBXNativeTarget "marvel111" */;
 			buildPhases = (
+				55F9D537290A948700D02DEA /* swiftlint */,
 				55B9FF472900937E00F64053 /* Sources */,
 				55B9FF482900937E00F64053 /* Frameworks */,
 				55B9FF492900937E00F64053 /* Resources */,
 				55B9FF6A2900969A00F64053 /* Embed Frameworks */,
-				55F9D537290A948700D02DEA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -247,7 +247,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		55F9D537290A948700D02DEA /* ShellScript */ = {
+		55F9D537290A948700D02DEA /* swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -257,6 +257,7 @@
 			);
 			inputPaths = (
 			);
+			name = swiftlint;
 			outputFileListPaths = (
 			);
 			outputPaths = (
