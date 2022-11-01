@@ -1,10 +1,3 @@
-//
-//  CollectionViewCell.swift
-//  marvel111
-//
-//  Created by Valery Shestakov on 21.10.2022.
-//
-
 import UIKit
 import Kingfisher
 
@@ -31,7 +24,8 @@ final class CollectionViewCell: UICollectionViewCell {
         setUpLayout()
     }
 
-    func setup(heroData: HeroModel) {
+    func setup(heroData: HeroModel, and tag: Int) {
+        imageView.image = .init()
         imageView.layoutIfNeeded()
         let processor = DownsamplingImageProcessor(size: imageView.bounds.size)
                      |> RoundCornerImageProcessor(cornerRadius: 20)
@@ -48,6 +42,7 @@ final class CollectionViewCell: UICollectionViewCell {
                 NSLog("Job failed: \(error.localizedDescription)")
             }
         }
+        imageView.tag = tag
         textLabel.text = heroData.name
     }
 

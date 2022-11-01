@@ -6,7 +6,11 @@ final class ListViewController: UIViewController {
     private let heroArray = HeroArray()
     private let background = BackgroundView(frame: .zero)
     private var currentSelectedItemIndex = 0
-
+    
+    private var fullScreenTransitionManager: FullScreenTransitionManager?
+    
+    private let fullScreenImageViewController = FullScreenImageViewController()
+    
     private let logoImage: UIImageView = {
         let logo = UIImageView()
         logo.image = UIImage(named: "marvel_logo")
@@ -77,14 +81,6 @@ final class ListViewController: UIViewController {
         collectionView.register(CollectionViewCell.self,
                                 forCellWithReuseIdentifier: String(describing: CollectionViewCell.self))
     }
-
-    @objc func loadHeroCardView() {
-        let heroCardViewController = HeroCardViewController()
-        let hero = heroArray.get(currentSelectedItemIndex)
-        heroCardViewController.setup(image: hero.imageLink, name: hero.name,
-                                     description: "very long description to test string breaking seems like")
-        navigationController?.pushViewController(heroCardViewController, animated: false)
-    }
 }
 
 extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
@@ -100,9 +96,20 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             for: indexPath) as? CollectionViewCell else {
             return .init()
         }
-        cell.setup(heroData: heroArray.get(indexPath.item))
-        cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(loadHeroCardView)))
+        let tag = indexPath.item + 1
+        cell.setup(heroData: heroArray.get(indexPath.item), and: tag)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let tag = indexPath.row + 1
+        let heroData = heroArray.get(indexPath.item)
+        let fullScreenTransitionManager = FullScreenTransitionManager(anchorViewTag: tag)
+        fullScreenImageViewController.setup(heroData: heroData, tag: tag)
+        fullScreenImageViewController.modalPresentationStyle = .custom
+        fullScreenImageViewController.transitioningDelegate = fullScreenTransitionManager
+        present(fullScreenImageViewController, animated: true)
+        self.fullScreenTransitionManager = fullScreenTransitionManager
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

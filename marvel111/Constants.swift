@@ -1,10 +1,3 @@
-//
-//  Constants.swift
-//  marvel111
-//
-//  Created by user225687 on 10/24/22.
-//
-
 import UIKit
 
 struct Constants {
