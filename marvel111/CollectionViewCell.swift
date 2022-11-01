@@ -12,6 +12,7 @@ final class CollectionViewCell: UICollectionViewCell {
 
     private let imageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.backgroundColor = .lightGray
         imageView.layer.cornerRadius = 15.0
         imageView.clipsToBounds = true
         return imageView
@@ -31,7 +32,8 @@ final class CollectionViewCell: UICollectionViewCell {
     }
 
     func setup(heroData: HeroModel) {
-        let processor = DownsamplingImageProcessor(size: self.bounds.size)
+        imageView.layoutIfNeeded()
+        let processor = DownsamplingImageProcessor(size: imageView.bounds.size)
                      |> RoundCornerImageProcessor(cornerRadius: 20)
         imageView.kf.setImage(
             with: heroData.imageLink ?? URL.init(string: ""),

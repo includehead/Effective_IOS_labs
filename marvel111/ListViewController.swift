@@ -7,20 +7,20 @@ final class ListViewController: UIViewController {
     private let background = BackgroundView(frame: .zero)
     private var currentSelectedItemIndex = 0
 
-    private let marvelLogo: UIImageView = {
+    private let logoImage: UIImageView = {
         let logo = UIImageView()
         logo.image = UIImage(named: "marvel_logo")
         return logo
     }()
 
-    private let chooseYourHeroTextLabel: UILabel = {
-        let chooseYourHeroTextLabel = UILabel()
-        chooseYourHeroTextLabel.text = "Choose your hero"
-        chooseYourHeroTextLabel.textColor = .white
-        chooseYourHeroTextLabel.font = UIFont(name: "Roboto-Black", size: 37)
-        chooseYourHeroTextLabel.textAlignment = .center
-        chooseYourHeroTextLabel.translatesAutoresizingMaskIntoConstraints = false
-        return chooseYourHeroTextLabel
+    private let titleTextLabel: UILabel = {
+        let titleTextLabel = UILabel()
+        titleTextLabel.text = "Choose your hero"
+        titleTextLabel.textColor = .white
+        titleTextLabel.font = UIFont(name: "Roboto-Black", size: 37)
+        titleTextLabel.textAlignment = .center
+        titleTextLabel.translatesAutoresizingMaskIntoConstraints = false
+        return titleTextLabel
     }()
 
     private lazy var collectionView: UICollectionView = {
@@ -43,8 +43,8 @@ final class ListViewController: UIViewController {
         title = ""
         navigationController?.navigationBar.tintColor = .white
         view.addSubview(background)
-        view.addSubview(marvelLogo)
-        view.addSubview(chooseYourHeroTextLabel)
+        view.addSubview(logoImage)
+        view.addSubview(titleTextLabel)
         registerCollectionViewCells()
         view.addSubview(collectionView)
         background.setTriangleColor(heroArray.get(0).color)
@@ -55,20 +55,20 @@ final class ListViewController: UIViewController {
         background.snp.makeConstraints { make in
             make.edges.equalTo(view.snp.edges)
         }
-        marvelLogo.snp.makeConstraints { make in
+        logoImage.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.centerX)
             make.top.equalTo(view).offset(70.0)
             make.size.equalTo(CGSize(width: 140, height: 30))
         }
-        chooseYourHeroTextLabel.snp.makeConstraints { make in
-            make.top.equalTo(marvelLogo.snp.bottom).offset(20)
+        titleTextLabel.snp.makeConstraints { make in
+            make.top.equalTo(logoImage.snp.bottom).offset(20)
             make.left.equalTo(view.snp.left)
             make.right.equalTo(view.snp.right)
         }
         collectionView.snp.makeConstraints { make in
             make.left.equalTo(view.snp.left)
             make.right.equalTo(view.snp.right)
-            make.top.equalTo(chooseYourHeroTextLabel.snp.bottom).offset(10)
+            make.top.equalTo(titleTextLabel.snp.bottom).offset(10)
             make.bottom.equalTo(view.snp.bottom).offset(-30)
         }
     }
