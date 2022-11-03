@@ -35,6 +35,8 @@
 		55F9D53C2911AFCF00D02DEA /* FullScreenTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F9D53B2911AFCF00D02DEA /* FullScreenTransitionManager.swift */; };
 		55F9D53F2911B15E00D02DEA /* TinyConstraints in Frameworks */ = {isa = PBXBuildFile; productRef = 55F9D53E2911B15E00D02DEA /* TinyConstraints */; };
 		55F9D5412911B6CC00D02DEA /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F9D5402911B6CC00D02DEA /* FullScreenImageViewController.swift */; };
+		55F9D5442912E4A600D02DEA /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 55F9D5432912E4A600D02DEA /* Alamofire */; };
+		55F9D5472912F56300D02DEA /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 55F9D5462912F56300D02DEA /* SwiftyJSON */; };
 		F7BDDA9D2906627400D4E7FE /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BDDA9C2906627400D4E7FE /* BackgroundView.swift */; };
 		F7BDDA9F2906764400D4E7FE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BDDA9E2906764400D4E7FE /* Constants.swift */; };
 		F7BDDAA229068BD000D4E7FE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F7BDDAA129068BD000D4E7FE /* SnapKit */; };
@@ -92,7 +94,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				55F9D53A290AA1BE00D02DEA /* Kingfisher in Frameworks */,
+				55F9D5442912E4A600D02DEA /* Alamofire in Frameworks */,
 				F7BDDAA229068BD000D4E7FE /* SnapKit in Frameworks */,
+				55F9D5472912F56300D02DEA /* SwiftyJSON in Frameworks */,
 				55F9D53F2911B15E00D02DEA /* TinyConstraints in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -143,8 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				55B9FF4E2900937E00F64053 /* AppDelegate.swift */,
-				554AF2952905A828003CC67A /* HeroModel.swift */,
-				554AF2972905A957003CC67A /* HeroArray.swift */,
+				55F9D54929131CDD00D02DEA /* heroModel */,
 				F7BDDA9E2906764400D4E7FE /* Constants.swift */,
 				55B9FF6B290098C100F64053 /* ListViewController.swift */,
 				554AF2932901D931003CC67A /* CollectionViewCell.swift */,
@@ -158,6 +161,15 @@
 				55B9FF5C2900937F00F64053 /* Info.plist */,
 			);
 			path = marvel111;
+			sourceTree = "<group>";
+		};
+		55F9D54929131CDD00D02DEA /* heroModel */ = {
+			isa = PBXGroup;
+			children = (
+				554AF2952905A828003CC67A /* HeroModel.swift */,
+				554AF2972905A957003CC67A /* HeroArray.swift */,
+			);
+			path = heroModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -182,6 +194,8 @@
 				F7BDDAA129068BD000D4E7FE /* SnapKit */,
 				55F9D539290AA1BE00D02DEA /* Kingfisher */,
 				55F9D53E2911B15E00D02DEA /* TinyConstraints */,
+				55F9D5432912E4A600D02DEA /* Alamofire */,
+				55F9D5462912F56300D02DEA /* SwiftyJSON */,
 			);
 			productName = marvel111;
 			productReference = 55B9FF4B2900937E00F64053 /* marvel111.app */;
@@ -215,6 +229,8 @@
 				F7BDDAA029068BD000D4E7FE /* XCRemoteSwiftPackageReference "SnapKit" */,
 				55F9D538290AA1BE00D02DEA /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				55F9D53D2911B15E00D02DEA /* XCRemoteSwiftPackageReference "TinyConstraints" */,
+				55F9D5422912E4A600D02DEA /* XCRemoteSwiftPackageReference "Alamofire" */,
+				55F9D5452912F56300D02DEA /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 			);
 			productRefGroup = 55B9FF4C2900937E00F64053 /* Products */;
 			projectDirPath = "";
@@ -525,6 +541,22 @@
 				minimumVersion = 4.0.0;
 			};
 		};
+		55F9D5422912E4A600D02DEA /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		55F9D5452912F56300D02DEA /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		F7BDDAA029068BD000D4E7FE /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -545,6 +577,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 55F9D53D2911B15E00D02DEA /* XCRemoteSwiftPackageReference "TinyConstraints" */;
 			productName = TinyConstraints;
+		};
+		55F9D5432912E4A600D02DEA /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55F9D5422912E4A600D02DEA /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		55F9D5462912F56300D02DEA /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55F9D5452912F56300D02DEA /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
 		};
 		F7BDDAA129068BD000D4E7FE /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

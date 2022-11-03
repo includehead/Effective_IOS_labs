@@ -1,9 +1,11 @@
 import UIKit
 import SnapKit
+import Alamofire
+
 
 final class ListViewController: UIViewController {
 
-    private let heroArray = HeroArray()
+    private var heroArray = Observer()
     private let background = BackgroundView(frame: .zero)
     private var currentSelectedItemIndex = 0
     
