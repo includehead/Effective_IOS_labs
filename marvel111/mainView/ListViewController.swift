@@ -144,15 +144,15 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
                                   y: scrollView.frame.size.height / 2 + scrollView.contentOffset.y)
         if let indexPath = collectionView.indexPathForItem(at: centerPoint) {
             currentSelectedItemIndex = indexPath.row
-            let imageResourse = ImageResource(downloadURL: (heroArray.datas[indexPath.row].imageLink) ?? URL(string: "http://127.0.0.1")!)
-            KingfisherManager.shared.retrieveImage(with: imageResourse, completionHandler: { result in
+            let cache = ImageCache.default
+            cache.retrieveImage(forKey: heroArray.datas[indexPath.row].heroId) { result in
                 switch result {
                     case .success(let value):
-                    self.background.setTriangleColor(value.image.averageColor!)
+                    self.background.setTriangleColor(value.image?.averageColor! ?? .red)
                     case .failure(let error):
                         print("Error: \(error)")
                     }
-            })
+            }
         }
     }
 }
