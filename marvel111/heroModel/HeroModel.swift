@@ -26,11 +26,13 @@ class Observer: ObservableObject {
     
     private var _totalHeroNumber: Int?
     var totalHeroNumber: Int? {
+        get {_totalHeroNumber}
         set {
             if _totalHeroNumber != nil {
                 return
             }
-        } get {_totalHeroNumber}
+            _totalHeroNumber = newValue
+        }
     }
     
     init(_ updateCollectionView: @escaping () -> Void, showError: @escaping (String) -> Void) {
@@ -68,8 +70,7 @@ class Observer: ObservableObject {
 
 class HeroModel {
     var name: String?
-    var _imageLink: URL?
-    var color: UIColor?
+    private var _imageLink: URL?
     var description: String?
     let heroId: String
     let updateCollectionView: () -> Void
@@ -83,12 +84,12 @@ class HeroModel {
             _imageLink = newValue
         }
     }
-    var _getMoreData: (() -> Void)?
+    private var _getMoreData: (() -> Void)?
     var getMoreData: (() -> Void)? {
+        get {_getMoreData}
         set {
             _getMoreData = newValue
         }
-        get {_getMoreData}
     }
     
     init(id: String, updateCollectionView: @escaping () -> Void) {
