@@ -64,30 +64,6 @@ class Observer: ObservableObject {
             self!.updateCollectionView()
         }
     }
-    
-//    func getRest() {
-//        let timestamp = NSDate().timeIntervalSince1970
-//        let dirtyMd5 = Insecure.MD5.hash(data: "\(timestamp)\(privateKey)\(publicKey)".data(using: .utf8)!)
-//        let md5 = dirtyMd5.map { String(format: "%02hhx", $0) }.joined()
-//
-//        var offset = 20
-//
-//        let request = "https://gateway.marvel.com" + "/v1/public/characters?" + "offset=\(offset)" + "&ts=\(timestamp)" + "&apikey=\(publicKey)" + "&hash=\(md5)"
-//        AF.request(request).responseData { [weak self] in
-//            let responce = try? JSON(data: $0.data!)
-//            guard let unwrappedResponce = responce else {return}
-//            NSLog("Got response from api: \(unwrappedResponce)😀")
-//            let data = unwrappedResponce["data"]
-//            let json = data["results"]
-//            for row in json {
-//                let id = row.1["id"].stringValue
-//                let heroData = HeroModel(id: id)
-//                NSLog("Got hero with id = \(id)┼")
-//                self?.datas.append(heroData)
-//            }
-//        }
-//    }
-    
 }
 
 class HeroModel {
@@ -114,14 +90,6 @@ class HeroModel {
         }
         get {_getMoreData}
     }
-
-//    init(name: String, image: URL?, color: UIColor, description: String) {
-//        self.name = name
-//        self.imageLink = image
-//        self.color = color
-//        self.description = description
-//        self.heroId = ""
-//    }
     
     init(id: String, updateCollectionView: @escaping () -> Void) {
         self.heroId = id
@@ -151,5 +119,4 @@ class HeroModel {
             updateCollectionView()
         }
     }
-    
 }
