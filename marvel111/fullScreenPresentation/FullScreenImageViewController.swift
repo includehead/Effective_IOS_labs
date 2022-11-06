@@ -22,6 +22,8 @@ class FullScreenImageViewController: UIViewController {
         let heroNameTextLabel = UILabel()
         heroNameTextLabel.textColor = .white
         heroNameTextLabel.font = UIFont(name: "Roboto-Black", size: 37)
+        heroNameTextLabel.shadowColor = .black
+        heroNameTextLabel.shadowOffset = CGSize(width: 5, height: 5)
         return heroNameTextLabel
     }()
     
@@ -31,6 +33,8 @@ class FullScreenImageViewController: UIViewController {
         heroDescriptionTextLabel.font = UIFont(name: "Roboto-Black", size: 34)
         heroDescriptionTextLabel.lineBreakMode = .byWordWrapping
         heroDescriptionTextLabel.numberOfLines = 0
+        heroDescriptionTextLabel.shadowColor = .black
+        heroDescriptionTextLabel.shadowOffset = CGSize(width: 5, height: 5)
         return heroDescriptionTextLabel
     }()
     
@@ -46,9 +50,7 @@ class FullScreenImageViewController: UIViewController {
         wrapperView.tag = tag
         heroImageView.kf.setImage(with: heroData.imageLink ?? URL(string: ""))
         heroNameTextLabel.text = heroData.name
-        heroDescriptionTextLabel.text = """
-            Marvel Entertainment, LLC is an American entertainment company founded in June 1998 and based in New York City
-            """
+        heroDescriptionTextLabel.text = heroData.description
     }
     
     required init?(coder: NSCoder) {

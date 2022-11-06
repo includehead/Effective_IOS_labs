@@ -51,6 +51,7 @@ final class CollectionViewCell: UICollectionViewCell {
         addSubview(textLabel)
         textLabel.snp.makeConstraints {
             $0.left.equalTo(self.snp.left).offset(20)
+            $0.right.equalTo(self.snp.right).offset(-10)
             $0.top.equalTo(self.snp.bottom).offset(-50)
         }
         imageView.snp.makeConstraints {

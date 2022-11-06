@@ -2,10 +2,8 @@ import UIKit
 import SnapKit
 import Alamofire
 
-
 final class ListViewController: UIViewController {
-
-    private var heroArray = Observer()
+    
     private let background = BackgroundView(frame: .zero)
     private var currentSelectedItemIndex = 0
     
@@ -43,6 +41,14 @@ final class ListViewController: UIViewController {
         collectionView.delegate = self
         return collectionView
     }()
+    
+    private lazy var heroArray = Observer { [weak collectionView] in
+        collectionView?.reloadData()
+    } showError: {
+        let alert = UIAlertController(title: "Error", message: $0, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Button", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +59,7 @@ final class ListViewController: UIViewController {
         view.addSubview(titleTextLabel)
         registerCollectionViewCells()
         view.addSubview(collectionView)
-        background.setTriangleColor(heroArray.get(0).color)
+        background.setTriangleColor(.black)
         setLayout()
     }
 
@@ -88,7 +94,7 @@ final class ListViewController: UIViewController {
 extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return heroArray.count()
+        return heroArray.datas.count
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -99,13 +105,13 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             return .init()
         }
         let tag = indexPath.item + 1
-        cell.setup(heroData: heroArray.get(indexPath.item), and: tag)
+        cell.setup(heroData: heroArray.datas[indexPath.item], and: tag)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let tag = indexPath.row + 1
-        let heroData = heroArray.get(indexPath.item)
+        let heroData = heroArray.datas[indexPath.item]
         let fullScreenTransitionManager = FullScreenTransitionManager(anchorViewTag: tag)
         fullScreenImageViewController.setup(heroData: heroData, tag: tag)
         fullScreenImageViewController.modalPresentationStyle = .custom
@@ -120,7 +126,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
                                   y: scrollView.frame.size.height / 2 + scrollView.contentOffset.y)
         if let indexPath = collectionView.indexPathForItem(at: centerPoint) {
             currentSelectedItemIndex = indexPath.row
-            background.setTriangleColor(heroArray.get(indexPath.row).color)
+            background.setTriangleColor(heroArray.datas[indexPath.row].color ?? .red)
         }
     }
 }

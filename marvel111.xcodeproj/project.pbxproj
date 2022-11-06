@@ -26,7 +26,6 @@
 		554AF292290179B2003CC67A /* PagingCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554AF291290179B2003CC67A /* PagingCollectionViewLayout.swift */; };
 		554AF2942901D931003CC67A /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554AF2932901D931003CC67A /* CollectionViewCell.swift */; };
 		554AF2962905A828003CC67A /* HeroModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554AF2952905A828003CC67A /* HeroModel.swift */; };
-		554AF2982905A957003CC67A /* HeroArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554AF2972905A957003CC67A /* HeroArray.swift */; };
 		55B9FF4F2900937E00F64053 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B9FF4E2900937E00F64053 /* AppDelegate.swift */; };
 		55B9FF582900937F00F64053 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B9FF572900937F00F64053 /* Assets.xcassets */; };
 		55B9FF5B2900937F00F64053 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55B9FF592900937F00F64053 /* LaunchScreen.storyboard */; };
@@ -75,7 +74,6 @@
 		554AF291290179B2003CC67A /* PagingCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagingCollectionViewLayout.swift; sourceTree = "<group>"; };
 		554AF2932901D931003CC67A /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		554AF2952905A828003CC67A /* HeroModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroModel.swift; sourceTree = "<group>"; };
-		554AF2972905A957003CC67A /* HeroArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroArray.swift; sourceTree = "<group>"; };
 		55B9FF4B2900937E00F64053 /* marvel111.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = marvel111.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B9FF4E2900937E00F64053 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55B9FF572900937F00F64053 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -149,12 +147,8 @@
 				55B9FF4E2900937E00F64053 /* AppDelegate.swift */,
 				55F9D54929131CDD00D02DEA /* heroModel */,
 				F7BDDA9E2906764400D4E7FE /* Constants.swift */,
-				55B9FF6B290098C100F64053 /* ListViewController.swift */,
-				554AF2932901D931003CC67A /* CollectionViewCell.swift */,
-				55F9D53B2911AFCF00D02DEA /* FullScreenTransitionManager.swift */,
-				55F9D5402911B6CC00D02DEA /* FullScreenImageViewController.swift */,
-				F7BDDA9C2906627400D4E7FE /* BackgroundView.swift */,
-				554AF291290179B2003CC67A /* PagingCollectionViewLayout.swift */,
+				55F9D54B29155EA500D02DEA /* mainView */,
+				55F9D54A2913D6A200D02DEA /* fullScreenPresentation */,
 				55B9FF572900937F00F64053 /* Assets.xcassets */,
 				554AF29029017639003CC67A /* font */,
 				55B9FF592900937F00F64053 /* LaunchScreen.storyboard */,
@@ -167,9 +161,28 @@
 			isa = PBXGroup;
 			children = (
 				554AF2952905A828003CC67A /* HeroModel.swift */,
-				554AF2972905A957003CC67A /* HeroArray.swift */,
 			);
 			path = heroModel;
+			sourceTree = "<group>";
+		};
+		55F9D54A2913D6A200D02DEA /* fullScreenPresentation */ = {
+			isa = PBXGroup;
+			children = (
+				55F9D53B2911AFCF00D02DEA /* FullScreenTransitionManager.swift */,
+				55F9D5402911B6CC00D02DEA /* FullScreenImageViewController.swift */,
+			);
+			path = fullScreenPresentation;
+			sourceTree = "<group>";
+		};
+		55F9D54B29155EA500D02DEA /* mainView */ = {
+			isa = PBXGroup;
+			children = (
+				55B9FF6B290098C100F64053 /* ListViewController.swift */,
+				554AF2932901D931003CC67A /* CollectionViewCell.swift */,
+				F7BDDA9C2906627400D4E7FE /* BackgroundView.swift */,
+				554AF291290179B2003CC67A /* PagingCollectionViewLayout.swift */,
+			);
+			path = mainView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,7 +300,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#if which swiftlint >/dev/null; then\n#  swiftlint\n#else\n#  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n#fi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -301,7 +314,6 @@
 				554AF292290179B2003CC67A /* PagingCollectionViewLayout.swift in Sources */,
 				55F9D53C2911AFCF00D02DEA /* FullScreenTransitionManager.swift in Sources */,
 				F7BDDA9D2906627400D4E7FE /* BackgroundView.swift in Sources */,
-				554AF2982905A957003CC67A /* HeroArray.swift in Sources */,
 				55B9FF6C290098C100F64053 /* ListViewController.swift in Sources */,
 				554AF2962905A828003CC67A /* HeroModel.swift in Sources */,
 				55F9D5412911B6CC00D02DEA /* FullScreenImageViewController.swift in Sources */,
