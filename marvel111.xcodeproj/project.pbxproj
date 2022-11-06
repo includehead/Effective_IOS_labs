@@ -36,6 +36,7 @@
 		55F9D5412911B6CC00D02DEA /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F9D5402911B6CC00D02DEA /* FullScreenImageViewController.swift */; };
 		55F9D5442912E4A600D02DEA /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 55F9D5432912E4A600D02DEA /* Alamofire */; };
 		55F9D5472912F56300D02DEA /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 55F9D5462912F56300D02DEA /* SwiftyJSON */; };
+		55F9D54E2917666900D02DEA /* UIImageColors in Frameworks */ = {isa = PBXBuildFile; productRef = 55F9D54D2917666900D02DEA /* UIImageColors */; };
 		F7BDDA9D2906627400D4E7FE /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BDDA9C2906627400D4E7FE /* BackgroundView.swift */; };
 		F7BDDA9F2906764400D4E7FE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BDDA9E2906764400D4E7FE /* Constants.swift */; };
 		F7BDDAA229068BD000D4E7FE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F7BDDAA129068BD000D4E7FE /* SnapKit */; };
@@ -91,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55F9D54E2917666900D02DEA /* UIImageColors in Frameworks */,
 				55F9D53A290AA1BE00D02DEA /* Kingfisher in Frameworks */,
 				55F9D5442912E4A600D02DEA /* Alamofire in Frameworks */,
 				F7BDDAA229068BD000D4E7FE /* SnapKit in Frameworks */,
@@ -209,6 +211,7 @@
 				55F9D53E2911B15E00D02DEA /* TinyConstraints */,
 				55F9D5432912E4A600D02DEA /* Alamofire */,
 				55F9D5462912F56300D02DEA /* SwiftyJSON */,
+				55F9D54D2917666900D02DEA /* UIImageColors */,
 			);
 			productName = marvel111;
 			productReference = 55B9FF4B2900937E00F64053 /* marvel111.app */;
@@ -244,6 +247,7 @@
 				55F9D53D2911B15E00D02DEA /* XCRemoteSwiftPackageReference "TinyConstraints" */,
 				55F9D5422912E4A600D02DEA /* XCRemoteSwiftPackageReference "Alamofire" */,
 				55F9D5452912F56300D02DEA /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				55F9D54C2917666900D02DEA /* XCRemoteSwiftPackageReference "UIImageColors" */,
 			);
 			productRefGroup = 55B9FF4C2900937E00F64053 /* Products */;
 			projectDirPath = "";
@@ -569,6 +573,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		55F9D54C2917666900D02DEA /* XCRemoteSwiftPackageReference "UIImageColors" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jathu/UIImageColors";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		F7BDDAA029068BD000D4E7FE /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -599,6 +611,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 55F9D5452912F56300D02DEA /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
 			productName = SwiftyJSON;
+		};
+		55F9D54D2917666900D02DEA /* UIImageColors */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55F9D54C2917666900D02DEA /* XCRemoteSwiftPackageReference "UIImageColors" */;
+			productName = UIImageColors;
 		};
 		F7BDDAA129068BD000D4E7FE /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

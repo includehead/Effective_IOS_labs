@@ -44,6 +44,15 @@
         "revision" : "3262e5c591d4ab6272255df2087a01bbebd138dc",
         "version" : "4.0.2"
       }
+    },
+    {
+      "identity" : "uiimagecolors",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jathu/UIImageColors",
+      "state" : {
+        "revision" : "e49e6c32ea556e9fa0109dc79686bea4a10d41a2",
+        "version" : "2.2.0"
+      }
     }
   ],
   "version" : 2

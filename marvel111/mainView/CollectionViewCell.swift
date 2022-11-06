@@ -32,7 +32,8 @@ final class CollectionViewCell: UICollectionViewCell {
         imageView.kf.setImage(
             with: heroData.imageLink ?? URL.init(string: ""),
             options: [
-                .processor(processor)
+                .processor(processor),
+                .cacheOriginalImage
             ]
         ) {
             switch $0 {
