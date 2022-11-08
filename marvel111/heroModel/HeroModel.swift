@@ -10,12 +10,9 @@ import SwiftyJSON
 import Alamofire
 import CryptoKit
 
-private let publicKey = "61e5488a7822174f2989d726559fc029"
-private let privateKey = "016959c7eec6034a2883f65c348962cd586944ee"
+let baseUrl = "https://gateway.marvel.com/v1/public/characters"
 
-extension String: Error {}
-
-class Observer: ObservableObject {
+class Observer {
     
     @Published var datas = [HeroModel]()
     
@@ -43,27 +40,29 @@ class Observer: ObservableObject {
     }
     
     func getData() {
-        let timestamp = NSDate().timeIntervalSince1970
-        let dirtyMd5 = Insecure.MD5.hash(data: "\(timestamp)\(privateKey)\(publicKey)".data(using: .utf8)!)
-        let md5 = dirtyMd5.map { String(format: "%02hhx", $0) }.joined()
-        let request = "https://gateway.marvel.com" + "/v1/public/characters?" + "offset=\(self.offset)" + "&ts=\(timestamp)" + "&apikey=\(publicKey)" + "&hash=\(md5)"
-        AF.request(request).responseData { [weak self] in
-            guard $0.data != nil else {self!.showError("Unable to fetch data!"); return}
+        AF.request(
+            baseUrl,
+            method: .get,
+            parameters: requestParams(offset: offset),
+            encoding: URLEncoding.queryString
+        ).responseData { [weak self] in
+            guard $0.data != nil else {self?.showError("Unable to fetch data!"); return }
             let responce = try? JSON(data: $0.data!)
-            guard let unwrappedResponce = responce else {return}
+            guard let unwrappedResponce = responce else { return }
             let data = unwrappedResponce["data"]
-            self!.offset += data["count"].intValue
+            self?.offset += data["count"].intValue
             let json = data["results"]
             for row in json {
                 let id = row.1["id"].stringValue
                 let imageURL = row.1["thumbnail"]["path"].stringValue + "." + row.1["thumbnail"]["extension"].stringValue
-                guard imageURL != "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg" else {continue}
+                guard imageURL != "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg" else { continue }
                 let heroData = HeroModel(id: id, updateCollectionView: self!.updateCollectionView)
-                NSLog("image URL = \(id)┼♡")
+                NSLog("hero added. id = \(id)┼♡")
                 self?.datas.append(heroData)
             }
-            self!.datas[self!.datas.count - 1].getMoreData = self?.getData
-            self!.updateCollectionView()
+            guard (self?.datas.isEmpty) != true else { self?.showError("Got no heroes :-("); return }
+            self?.datas[self!.datas.count - 1].getMoreData = self?.getData
+            self?.updateCollectionView()
         }
     }
 }
@@ -99,12 +98,10 @@ class HeroModel {
     }
     
     func getHeroData() {
-        let timestamp = NSDate().timeIntervalSince1970
-        let dirtyMd5 = Insecure.MD5.hash(data: "\(timestamp)\(privateKey)\(publicKey)".data(using: .utf8)!)
-        let md5 = dirtyMd5.map { String(format: "%02hhx", $0) }.joined()
-        
-        let request = "https://gateway.marvel.com" + "/v1/public/characters/\(heroId)?" + "ts=\(timestamp)" + "&apikey=\(publicKey)" + "&hash=\(md5)"
-        AF.request(request).responseData { [unowned self] in
+        AF.request(
+            baseUrl + "/" + heroId,
+            parameters: requestParams()
+        ).responseData { [weak self] in
             debugPrint($0)
             let responce = try? JSON(data: $0.data!)
             guard let unwrappedResponce = responce else {return}
@@ -112,12 +109,25 @@ class HeroModel {
             let data = unwrappedResponce["data"]
             let json = data["results"]
             for row in json {
-                name = row.1["name"].stringValue
+                self?.name = row.1["name"].stringValue
                 let imageURL = row.1["thumbnail"]["path"].stringValue + "/portrait_uncanny." + row.1["thumbnail"]["extension"].stringValue
-                imageLink = URL(string: imageURL)
-                description = row.1["description"].stringValue
+                self?.imageLink = URL(string: imageURL)
+                self?.description = row.1["description"].stringValue
             }
-            updateCollectionView()
+            self?.updateCollectionView()
         }
     }
+}
+
+func requestParams(offset: Int = 0) -> [String: String] {
+    let privateKey = "016959c7eec6034a2883f65c348962cd586944ee"
+    let apikey = "61e5488a7822174f2989d726559fc029"
+    let timeStamp = NSDate().timeIntervalSince1970
+    let hash = getHash(timeStamp: timeStamp, apikey: apikey, privateKey: privateKey)
+    return ["apikey": apikey, "ts": "\(timeStamp)", "hash": hash, "offset": "\(offset)"]
+}
+
+private func getHash(timeStamp: Double, apikey: String, privateKey: String) -> String {
+    let dirtyMd5 = Insecure.MD5.hash(data: "\(timeStamp)\(privateKey)\(apikey)".data(using: .utf8)!)
+    return dirtyMd5.map { String(format: "%02hhx", $0) }.joined()
 }
