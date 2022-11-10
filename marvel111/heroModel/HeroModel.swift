@@ -46,23 +46,24 @@ class Observer {
             parameters: requestParams(offset: offset),
             encoding: URLEncoding.queryString
         ).responseData { [weak self] in
-            guard $0.data != nil else {self?.showError("Unable to fetch data!"); return }
+            guard $0.data != nil else { self?.showError("Unable to fetch data!"); return }
             let responce = try? JSON(data: $0.data!)
             guard let unwrappedResponce = responce else { return }
             let data = unwrappedResponce["data"]
             self?.offset += data["count"].intValue
             let json = data["results"]
+            var newHeroes: [HeroModel] = []
             for row in json {
                 let id = row.1["id"].stringValue
                 let imageURL = row.1["thumbnail"]["path"].stringValue + "." + row.1["thumbnail"]["extension"].stringValue
                 guard imageURL != "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg" else { continue }
                 let heroData = HeroModel(id: id, updateCollectionView: self!.updateCollectionView)
                 NSLog("hero added. id = \(id)┼♡")
-                self?.datas.append(heroData)
+                newHeroes.append(heroData)
             }
+            self?.datas += newHeroes
             guard (self?.datas.isEmpty) != true else { self?.showError("Got no heroes :-("); return }
             self?.datas[self!.datas.count - 1].getMoreData = self?.getData
-            self?.updateCollectionView()
         }
     }
 }
@@ -104,7 +105,7 @@ class HeroModel {
         ).responseData { [weak self] in
             debugPrint($0)
             let responce = try? JSON(data: $0.data!)
-            guard let unwrappedResponce = responce else {return}
+            guard let unwrappedResponce = responce else { return }
             NSLog("Got response from api: \(unwrappedResponce)😀")
             let data = unwrappedResponce["data"]
             let json = data["results"]
