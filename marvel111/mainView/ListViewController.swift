@@ -25,6 +25,8 @@ extension UIImage {
 
 final class ListViewController: UIViewController {
     
+    private var offset: Int = 0
+    
     private let background = BackgroundView(frame: .zero)
     private var currentSelectedItemIndex = 0
     
@@ -63,12 +65,15 @@ final class ListViewController: UIViewController {
         return collectionView
     }()
     
-    private lazy var heroArray = Observer { [weak collectionView] in
-        collectionView?.reloadData()
-    } showError: {
-        let alert = UIAlertController(title: "Error", message: $0, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Button", style: .default, handler: nil))
-        self.present(alert, animated: true, completion: nil)
+    private lazy var charactersArray = [CharacterModel]() {
+        didSet {collectionView.reloadData()}
+    }
+    
+    private lazy var getMoreCharacters: () -> Void = {
+        getCharacters(offset: self.offset) { [weak self] in
+            self?.charactersArray.append(contentsOf: $0)
+            self?.offset += $0.count
+        }
     }
 
     override func viewDidLoad() {
@@ -112,10 +117,11 @@ final class ListViewController: UIViewController {
     }
 }
 
-extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return heroArray.datas.count
+        if charactersArray.isEmpty { getMoreCharacters() }
+        return charactersArray.count
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -126,19 +132,26 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             return .init()
         }
         let tag = indexPath.item + 1
-        cell.setup(heroData: heroArray.datas[indexPath.item], and: tag)
+        cell.setup(characterData: charactersArray[indexPath.item], and: tag)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let tag = indexPath.row + 1
-        let heroData = heroArray.datas[indexPath.item]
+        let characterData = charactersArray[indexPath.item]
         let fullScreenTransitionManager = FullScreenTransitionManager(anchorViewTag: tag)
-        fullScreenImageViewController.setup(heroData: heroData, tag: tag)
+        fullScreenImageViewController.setup(characterData: characterData, tag: tag)
         fullScreenImageViewController.modalPresentationStyle = .custom
         fullScreenImageViewController.transitioningDelegate = fullScreenTransitionManager
         present(fullScreenImageViewController, animated: true)
         self.fullScreenTransitionManager = fullScreenTransitionManager
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == charactersArray.count - 1 {
+            // Last cell is visible
+            getMoreCharacters()
+        }
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -148,10 +161,10 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         if let indexPath = collectionView.indexPathForItem(at: centerPoint) {
             currentSelectedItemIndex = indexPath.row
             let cache = ImageCache.default
-            cache.retrieveImage(forKey: heroArray.datas[indexPath.row].heroId) { result in
+            cache.retrieveImage(forKey: "\(charactersArray[indexPath.row].heroId)") { result in
                 switch result {
                 case .success(let value):
-                    self.background.setTriangleColor(value.image?.averageColor! ?? .init())
+                    self.background.setTriangleColor(value.image?.averageColor ?? .clear)
                 case .failure(let error):
                     print("Error: \(error)")
                 }

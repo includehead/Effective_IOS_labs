@@ -1,6 +1,4 @@
 import UIKit
-import TinyConstraints
-import Kingfisher
 
 class FullScreenImageViewController: UIViewController {
     
@@ -45,12 +43,15 @@ class FullScreenImageViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    func setup(heroData: HeroModel, tag: Int) {
+    func setup(characterData: CharacterModel, tag: Int) {
         heroImageView.image = .init()
         wrapperView.tag = tag
-        heroImageView.kf.setImage(with: heroData.imageLink ?? URL(string: ""))
-        heroNameTextLabel.text = heroData.name
-        heroDescriptionTextLabel.text = heroData.description
+        getCharacters(id: characterData.heroId) { [weak self] in
+            self?.heroImageView.kf.setImage(with: URL(string: $0.first?.imageLink ?? "") ?? URL(string: "http://127.0.0.1"))
+            self?.heroNameTextLabel.text = $0.first?.name
+            self?.heroDescriptionTextLabel.text = $0.first?.description
+        }
+
     }
     
     required init?(coder: NSCoder) {

@@ -24,14 +24,15 @@ final class CollectionViewCell: UICollectionViewCell {
         setUpLayout()
     }
 
-    func setup(heroData: HeroModel, and tag: Int) {
+    func setup(characterData: CharacterModel, and tag: Int) {
         imageView.image = .init()
         imageView.layoutIfNeeded()
         let processor = DownsamplingImageProcessor(size: imageView.bounds.size)
                      |> RoundCornerImageProcessor(cornerRadius: 20)
-        let resource = ImageResource(downloadURL: (heroData.imageLink ?? URL.init(string: "http://127.0.0.1"))!, cacheKey: heroData.heroId)
+        let resource = ImageResource(downloadURL: URL(string: characterData.imageLink) ?? URL(string: "http://127.0.0.1")!, cacheKey: "\(characterData.heroId)")
         imageView.kf.setImage(
             with: resource,
+            placeholder: UIImage(named: "placeholder"),
             options: [
                 .processor(processor),
                 .cacheOriginalImage
@@ -45,7 +46,7 @@ final class CollectionViewCell: UICollectionViewCell {
             }
         }
         imageView.tag = tag
-        textLabel.text = heroData.name
+        textLabel.text = characterData.name
     }
 
     private func setUpLayout() {
