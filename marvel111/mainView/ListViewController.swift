@@ -3,6 +3,7 @@ import SnapKit
 import Alamofire
 import UIImageColors
 import Kingfisher
+import RealmSwift
 
 extension UIImage {
     var averageColor: UIColor? {
@@ -24,6 +25,8 @@ extension UIImage {
 }
 
 final class ListViewController: UIViewController {
+    
+    private var internetConnectionAvailable = true
     
     private var offset: Int = 0
     
@@ -65,14 +68,31 @@ final class ListViewController: UIViewController {
         return collectionView
     }()
     
-    private lazy var charactersArray = [CharacterModel]() {
-        didSet {collectionView.reloadData()}
+    let realm = try! Realm()
+    
+    private lazy var charactersArray: [CharacterModel] = [] {
+        willSet {
+            try! realm.write { realm.add(newValue, update: .modified) }
+        }
+        didSet {
+            collectionView.reloadData()
+        }
     }
     
     private lazy var getMoreCharacters: () -> Void = {
         getCharacters(offset: self.offset) { [weak self] in
-            self?.charactersArray.append(contentsOf: $0)
-            self?.offset += $0.count
+            if $0.isEmpty {
+                self?.internetConnectionAvailable = false
+                self?.charactersArray = {
+                    guard let charactersResults = self?.realm.objects(CharacterModel.self) else { return [] }
+                    return Array(charactersResults)
+                }()              
+            }
+            else {
+                self?.charactersArray.append(contentsOf: $0)
+                $0.forEach{ character in self?.charactersArray.append(character) }
+                self?.offset += $0.count
+            }
         }
     }
 
@@ -151,6 +171,8 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         if indexPath.row == charactersArray.count - 1 {
             // Last cell is visible
             getMoreCharacters()
+            collectionView.reloadData()
+            
         }
     }
 

@@ -49,7 +49,7 @@ class FullScreenImageViewController: UIViewController {
         getCharacters(id: characterData.heroId) { [weak self] in
             self?.heroImageView.kf.setImage(with: URL(string: $0.first?.imageLink ?? "") ?? URL(string: "http://127.0.0.1"))
             self?.heroNameTextLabel.text = $0.first?.name
-            self?.heroDescriptionTextLabel.text = $0.first?.description
+            self?.heroDescriptionTextLabel.text = $0.first?.characterDescription
         }
 
     }

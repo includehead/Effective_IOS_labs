@@ -2,19 +2,21 @@ import UIKit
 import SwiftyJSON
 import Alamofire
 import CryptoKit
+import RealmSwift
 
-let baseUrl = "https://gateway.marvel.com/v1/public/characters"
+let baseUrl = "htttps://gateway.marvel.com/v1/public/characters"
 
-struct CharacterModel {
-    let name: String
-    let description: String
-    let heroId: Int
-    let imageLink: String
+class CharacterModel: Object {
+    @Persisted var name: String
+    @Persisted var characterDescription: String
+    @Persisted(primaryKey: true) var heroId: Int
+    @Persisted var imageLink: String
     
-    init(id: Int, name: String, imagelink: String, description: String) {
+    convenience init(id: Int, name: String, imagelink: String, description: String) {
+        self.init()
         self.heroId = id
         self.name = name
-        self.description = description
+        self.characterDescription = description
         if imagelink.hasSuffix("jpg") {
             self.imageLink = imagelink
         } else {
@@ -32,7 +34,7 @@ func getCharacters(id: Int = -1, offset: Int = 0, _ completion: @escaping ([Char
         case .success(let charactersPayload):
             let charactersDecodable = charactersPayload.data?.results
             var characterModelArray: [CharacterModel] = []
-            for character in charactersDecodable! {
+            for character in charactersDecodable ?? [] {
                 let newModel = CharacterModel(id: character?.id ?? -1, name: character?.name ?? "",
                                               imagelink: character?.thumbnail?.imageUrlString ?? "",
                                               description: character?.description ?? "")
@@ -41,6 +43,7 @@ func getCharacters(id: Int = -1, offset: Int = 0, _ completion: @escaping ([Char
             completion(characterModelArray)
         case .failure(let failure):
             NSLog(failure.localizedDescription)
+            completion(.init())
         }
     }
 }
