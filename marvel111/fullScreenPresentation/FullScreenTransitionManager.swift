@@ -1,5 +1,5 @@
 import UIKit
-import TinyConstraints
+import SnapKit
 
 // MARK: FullScreenPresentationController
 
@@ -15,12 +15,19 @@ final class FullScreenPresentationController: UIPresentationController {
         closeButtonBlurEffectView.contentView.addSubview(vibrancyEffectView)
         vibrancyEffectView.contentView.addSubview(button)
         
-        button.edgesToSuperview()
-        vibrancyEffectView.edgesToSuperview()
+        button.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        vibrancyEffectView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         
         closeButtonBlurEffectView.layer.cornerRadius = 24
         closeButtonBlurEffectView.clipsToBounds = true
-        closeButtonBlurEffectView.size(CGSize(width: 48, height: 48))
+        closeButtonBlurEffectView.snp.makeConstraints { make in
+            make.width.equalTo(48)
+            make.height.equalTo(48)
+        }
         
         return closeButtonBlurEffectView
     }()
@@ -46,9 +53,13 @@ extension FullScreenPresentationController {
         
         containerView.addSubview(backgroundView)
         containerView.addSubview(closeButtonContainer)
-        backgroundView.edgesToSuperview()
-        closeButtonContainer.topToSuperview(offset: 16, usingSafeArea: true)
-        closeButtonContainer.trailingToSuperview(offset: 16, usingSafeArea: true)
+        backgroundView.snp.makeConstraints { make in
+            make.leading.top.trailing.bottom.equalToSuperview()
+        }
+        closeButtonContainer.snp.makeConstraints { make in
+            make.top.equalTo(backgroundView.safeAreaLayoutGuide).offset(6)
+            make.right.equalTo(backgroundView).inset(10)
+        }
         
         guard let transitionCoordinator = presentingViewController.transitionCoordinator else { return }
         
@@ -159,7 +170,9 @@ final class FullScreenAnimationController: NSObject, UIViewControllerAnimatedTra
             }
             // In between the presentations controller's background and close button
             transitionContext.containerView.insertSubview(toViewController.view, at: 1)
-            toViewController.view.edgesToSuperview()
+            toViewController.view.snp.makeConstraints { make in
+                make.leading.top.trailing.bottom.equalToSuperview()
+            }
             toViewController.view.layoutIfNeeded()
             propertyAnimator = presentAnimator(with: transitionContext, animating: toViewController)
         case .dismiss:

@@ -4,9 +4,13 @@ import Alamofire
 import CryptoKit
 import RealmSwift
 
-let baseUrl = "htttps://gateway.marvel.com/v1/public/characters"
+extension String: LocalizedError {
+    public var errorDescription: String? { return self }
+}
 
-class CharacterModel: Object {
+let baseUrl = "https://gateway.marvel.com/v1/public/characters"
+
+final class CharacterModel: Object {
     @Persisted var name: String
     @Persisted var characterDescription: String
     @Persisted(primaryKey: true) var heroId: Int
@@ -25,9 +29,9 @@ class CharacterModel: Object {
     }
 }
 
-func getCharacters(id: Int = -1, offset: Int = 0, _ completion: @escaping ([CharacterModel]) -> Void) {
+func getCharacters(offset: Int = 0, _ completion: @escaping (Result<[CharacterModel], Error>) -> Void) {
     AF.request(
-        baseUrl + (id == -1 ? "" : "/\(id)"),
+        baseUrl,
         parameters: requestParams(offset: offset)
     ).responseDecodable(of: CharactersPayload.self) { response in
         switch response.result {
@@ -40,10 +44,33 @@ func getCharacters(id: Int = -1, offset: Int = 0, _ completion: @escaping ([Char
                                               description: character?.description ?? "")
                 characterModelArray.append(newModel)
             }
-            completion(characterModelArray)
+            completion(.success(characterModelArray))
         case .failure(let failure):
             NSLog(failure.localizedDescription)
-            completion(.init())
+            completion(.failure("Probably network error."))
+        }
+    }
+}
+
+func getCharacter(id: Int, _ completion: @escaping (Result<CharacterModel, Error>) -> Void) {
+    AF.request(
+        baseUrl + "/\(id)",
+        parameters: requestParams()
+    ).responseDecodable(of: CharactersPayload.self) { response in
+        switch response.result {
+        case .success(let charactersPayload):
+            let charactersDecodable = charactersPayload.data?.results
+            var characterModelArray: [CharacterModel] = []
+            for character in charactersDecodable ?? [] {
+                let newModel = CharacterModel(id: character?.id ?? -1, name: character?.name ?? "",
+                                              imagelink: character?.thumbnail?.imageUrlString ?? "",
+                                              description: character?.description ?? "")
+                characterModelArray.append(newModel)
+            }
+            completion(.success(characterModelArray.first ?? .init()))
+        case .failure(let failure):
+            NSLog(failure.localizedDescription)
+            completion(.failure("Definetely network error."))
         }
     }
 }

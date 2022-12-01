@@ -80,18 +80,17 @@ final class ListViewController: UIViewController {
     }
     
     private lazy var getMoreCharacters: () -> Void = {
-        getCharacters(offset: self.offset) { [weak self] in
-            if $0.isEmpty {
+        getCharacters(offset: self.offset) { [weak self] result in
+            switch result {
+            case .success(let characterModelArray):
+                self?.charactersArray.append(contentsOf: characterModelArray)
+                self?.offset += characterModelArray.count
+            case .failure(let error):
                 self?.internetConnectionAvailable = false
                 self?.charactersArray = {
                     guard let charactersResults = self?.realm.objects(CharacterModel.self) else { return [] }
                     return Array(charactersResults)
-                }()              
-            }
-            else {
-                self?.charactersArray.append(contentsOf: $0)
-                $0.forEach{ character in self?.charactersArray.append(character) }
-                self?.offset += $0.count
+                }()
             }
         }
     }
