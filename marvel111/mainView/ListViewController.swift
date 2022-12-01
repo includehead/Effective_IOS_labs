@@ -37,6 +37,16 @@ final class ListViewController: UIViewController {
     
     private let fullScreenImageViewController = FullScreenImageViewController()
     
+    private lazy var mainScrollView: UIScrollView = { [weak self] in
+        let mainScrollView = UIScrollView()
+        let refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Reloading data")
+        refreshControl.backgroundColor = .systemGray
+        refreshControl.addTarget(self, action: #selector(self?.refresh), for: .valueChanged)
+        mainScrollView.refreshControl = refreshControl
+        return mainScrollView
+    }()
+    
     private let logoImage: UIImageView = {
         let logo = UIImageView()
         logo.image = UIImage(named: "marvel_logo")
@@ -49,7 +59,6 @@ final class ListViewController: UIViewController {
         titleTextLabel.textColor = .white
         titleTextLabel.font = UIFont(name: "Roboto-Black", size: 37)
         titleTextLabel.textAlignment = .center
-        titleTextLabel.translatesAutoresizingMaskIntoConstraints = false
         return titleTextLabel
     }()
 
@@ -63,6 +72,8 @@ final class ListViewController: UIViewController {
         collectionView.decelerationRate = .fast
         collectionView.backgroundColor = .none
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.alwaysBounceVertical = false
         collectionView.dataSource = self
         collectionView.delegate = self
         return collectionView
@@ -99,34 +110,57 @@ final class ListViewController: UIViewController {
         super.viewDidLoad()
         title = ""
         navigationController?.navigationBar.tintColor = .white
-        view.addSubview(background)
-        view.addSubview(logoImage)
-        view.addSubview(titleTextLabel)
+        view.addSubview(mainScrollView)
+        mainScrollView.addSubview(background)
+        mainScrollView.addSubview(logoImage)
+        mainScrollView.addSubview(titleTextLabel)
         registerCollectionViewCells()
-        view.addSubview(collectionView)
+        mainScrollView.addSubview(collectionView)
         background.setTriangleColor(.black)
+        mainScrollView.contentInsetAdjustmentBehavior = .never
+        mainScrollView.alwaysBounceHorizontal = false
+        mainScrollView.alwaysBounceVertical = true
         setLayout()
+    }
+    
+    @objc func refresh() {
+       // Code to refresh collectionView
+        offset = 0
+        charactersArray.removeAll(keepingCapacity: true)
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+            self?.mainScrollView.refreshControl?.endRefreshing()
+        }
     }
 
     private func setLayout() {
-        background.snp.makeConstraints { make in
+        
+        mainScrollView.snp.makeConstraints { make in
             make.edges.equalTo(view.snp.edges)
+            make.height.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+        
+        background.snp.makeConstraints { make in
+            make.edges.equalTo(mainScrollView.snp.edges)
+            make.height.equalToSuperview()
+            make.width.equalToSuperview()
         }
         logoImage.snp.makeConstraints { make in
-            make.centerX.equalTo(view.snp.centerX)
-            make.top.equalTo(view).offset(70.0)
+            make.centerX.equalTo(mainScrollView.snp.centerX)
+            make.top.equalTo(mainScrollView).offset(70.0)
             make.size.equalTo(CGSize(width: 140, height: 30))
         }
         titleTextLabel.snp.makeConstraints { make in
             make.top.equalTo(logoImage.snp.bottom).offset(20)
-            make.left.equalTo(view.snp.left)
-            make.right.equalTo(view.snp.right)
+            make.left.equalTo(mainScrollView.snp.left)
+            make.right.equalTo(mainScrollView.snp.right)
         }
         collectionView.snp.makeConstraints { make in
-            make.left.equalTo(view.snp.left)
-            make.right.equalTo(view.snp.right)
+            make.left.equalTo(mainScrollView.snp.left)
+            make.right.equalTo(mainScrollView.snp.right)
             make.top.equalTo(titleTextLabel.snp.bottom).offset(10)
-            make.bottom.equalTo(view.snp.bottom).offset(-30)
+            make.bottom.equalTo(mainScrollView.snp.bottom).offset(-30)
         }
     }
 
