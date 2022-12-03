@@ -34,12 +34,7 @@ func getCharacters(offset: Int = 0, _ completion: @escaping (Result<[CharacterMo
         case .success(let charactersPayload):
             let charactersDecodable = charactersPayload.data?.results
             var characterModelArray: [CharacterModel] = []
-            for character in charactersDecodable ?? [] {
-                let newModel = CharacterModel(id: character?.id ?? -1, name: character?.name ?? "",
-                                              imagelink: character?.thumbnail?.imageUrlString ?? "",
-                                              description: character?.description ?? "")
-                characterModelArray.append(newModel)
-            }
+            charactersDecodable?.forEach { characterModelArray.append(createCharacterFromDecodable(character: $0)) }
             completion(.success(characterModelArray))
         case .failure(let failure):
             NSLog(failure.localizedDescription)
@@ -57,18 +52,19 @@ func getCharacter(id: Int, _ completion: @escaping (Result<CharacterModel, Error
         case .success(let charactersPayload):
             let charactersDecodable = charactersPayload.data?.results
             var characterModelArray: [CharacterModel] = []
-            for character in charactersDecodable ?? [] {
-                let newModel = CharacterModel(id: character?.id ?? -1, name: character?.name ?? "",
-                                              imagelink: character?.thumbnail?.imageUrlString ?? "",
-                                              description: character?.description ?? "")
-                characterModelArray.append(newModel)
-            }
+            charactersDecodable?.forEach { characterModelArray.append(createCharacterFromDecodable(character: $0)) }
             completion(.success(characterModelArray.first ?? .init()))
         case .failure(let failure):
             NSLog(failure.localizedDescription)
             completion(.failure(failure))
         }
     }
+}
+
+func createCharacterFromDecodable(character: CharacterDecodable?) -> CharacterModel {
+    return CharacterModel(id: character?.id ?? -1, name: character?.name ?? "",
+                          imagelink: character?.thumbnail?.imageUrlString ?? "",
+                          description: character?.description ?? "")
 }
 
 struct CharactersPayload: Decodable {
