@@ -10,7 +10,7 @@ final class FullScreenPresentationController: UIPresentationController {
         
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "xmark"), for: .normal)
-        button.addTarget(self, action: #selector(close), for: .primaryActionTriggered)
+        button.addAction(UIAction(title: "Refresh") { [weak self] _ in self?.presentedViewController.dismiss(animated: true) }, for: .touchUpInside)
         
         closeButtonBlurEffectView.contentView.addSubview(vibrancyEffectView)
         vibrancyEffectView.contentView.addSubview(button)
@@ -39,10 +39,6 @@ final class FullScreenPresentationController: UIPresentationController {
     }()
     
     private let blurEffect = UIBlurEffect(style: .systemThinMaterial)
-    
-    @objc private func close(_ button: UIButton) {
-        presentedViewController.dismiss(animated: true)
-    }
 }
 
 // MARK: UIPresentationController

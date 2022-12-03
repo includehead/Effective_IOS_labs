@@ -78,15 +78,9 @@ class FullScreenImageViewController: UIViewController {
         wrapperView.snp.makeConstraints { make in
             make.edges.equalTo(view)
         }
-//        wrapperView.edges(to: view)
-//        wrapperView.width(to: view)
-//        wrapperView.height(to: view)
         heroImageView.snp.makeConstraints { make in
             make.edges.equalTo(wrapperView)
         }
-        
-//        heroImageView.centerInSuperview()
-//        heroImageView.edges(to: wrapperView)
         
         heroDescriptionTextLabel.snp.makeConstraints {
             $0.left.equalTo(wrapperView.snp.left).offset(textOffset)
