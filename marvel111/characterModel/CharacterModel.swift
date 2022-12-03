@@ -4,10 +4,6 @@ import Alamofire
 import CryptoKit
 import RealmSwift
 
-extension String: LocalizedError {
-    public var errorDescription: String? { return self }
-}
-
 let baseUrl = "https://gateway.marvel.com/v1/public/characters"
 
 final class CharacterModel: Object {
@@ -47,7 +43,7 @@ func getCharacters(offset: Int = 0, _ completion: @escaping (Result<[CharacterMo
             completion(.success(characterModelArray))
         case .failure(let failure):
             NSLog(failure.localizedDescription)
-            completion(.failure("Probably network error."))
+            completion(.failure(failure))
         }
     }
 }
@@ -70,7 +66,7 @@ func getCharacter(id: Int, _ completion: @escaping (Result<CharacterModel, Error
             completion(.success(characterModelArray.first ?? .init()))
         case .failure(let failure):
             NSLog(failure.localizedDescription)
-            completion(.failure("Definetely network error."))
+            completion(.failure(failure))
         }
     }
 }
