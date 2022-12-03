@@ -25,8 +25,7 @@ final class FullScreenPresentationController: UIPresentationController {
         closeButtonBlurEffectView.layer.cornerRadius = 24
         closeButtonBlurEffectView.clipsToBounds = true
         closeButtonBlurEffectView.snp.makeConstraints { make in
-            make.width.equalTo(48)
-            make.height.equalTo(48)
+            make.size.equalTo(CGSize(width: 48, height: 48))
         }
         
         return closeButtonBlurEffectView

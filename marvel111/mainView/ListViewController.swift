@@ -26,8 +26,6 @@ extension UIImage {
 
 final class ListViewController: UIViewController {
     
-    private var internetConnectionAvailable = true
-    
     private var offset: Int = 0
     
     private let background = BackgroundView(frame: .zero)
@@ -37,15 +35,17 @@ final class ListViewController: UIViewController {
     
     private let fullScreenImageViewController = FullScreenImageViewController()
     
-    private lazy var mainScrollView: UIScrollView = { [weak self] in
+    private lazy var mainScrollView: UIScrollView = {
         let mainScrollView = UIScrollView()
         let refreshControl = UIRefreshControl()
         refreshControl.attributedTitle = NSAttributedString(string: "Reloading data")
         refreshControl.backgroundColor = .systemGray
-        refreshControl.addTarget(self, action: #selector(self?.refresh), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
         mainScrollView.refreshControl = refreshControl
         return mainScrollView
     }()
+    
+    private let contentView = UIView()
     
     private let logoImage: UIImageView = {
         let logo = UIImageView()
@@ -79,11 +79,11 @@ final class ListViewController: UIViewController {
         return collectionView
     }()
     
-    let realm = try! Realm()
+    let realm = try? Realm()
     
     private lazy var charactersArray: [CharacterModel] = [] {
         willSet {
-            try! realm.write { realm.add(newValue, update: .modified) }
+            try? realm?.write { realm?.add(newValue, update: .modified) }
         }
         didSet {
             collectionView.reloadData()
@@ -97,9 +97,8 @@ final class ListViewController: UIViewController {
                 self?.charactersArray.append(contentsOf: characterModelArray)
                 self?.offset += characterModelArray.count
             case .failure(let error):
-                self?.internetConnectionAvailable = false
                 self?.charactersArray = {
-                    guard let charactersResults = self?.realm.objects(CharacterModel.self) else { return [] }
+                    guard let charactersResults = self?.realm?.objects(CharacterModel.self) else { return [] }
                     return Array(charactersResults)
                 }()
             }
@@ -111,11 +110,12 @@ final class ListViewController: UIViewController {
         title = ""
         navigationController?.navigationBar.tintColor = .white
         view.addSubview(mainScrollView)
-        mainScrollView.addSubview(background)
-        mainScrollView.addSubview(logoImage)
-        mainScrollView.addSubview(titleTextLabel)
+        mainScrollView.addSubview(contentView)
+        contentView.addSubview(background)
+        contentView.addSubview(logoImage)
+        contentView.addSubview(titleTextLabel)
         registerCollectionViewCells()
-        mainScrollView.addSubview(collectionView)
+        contentView.addSubview(collectionView)
         background.setTriangleColor(.black)
         mainScrollView.contentInsetAdjustmentBehavior = .never
         mainScrollView.alwaysBounceHorizontal = false
@@ -137,30 +137,30 @@ final class ListViewController: UIViewController {
         
         mainScrollView.snp.makeConstraints { make in
             make.edges.equalTo(view.snp.edges)
+        }
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
             make.height.equalToSuperview()
             make.width.equalToSuperview()
         }
-        
         background.snp.makeConstraints { make in
-            make.edges.equalTo(mainScrollView.snp.edges)
-            make.height.equalToSuperview()
-            make.width.equalToSuperview()
+            make.edges.equalTo(contentView.snp.edges)
         }
         logoImage.snp.makeConstraints { make in
-            make.centerX.equalTo(mainScrollView.snp.centerX)
-            make.top.equalTo(mainScrollView).offset(70.0)
+            make.centerX.equalTo(contentView.snp.centerX)
+            make.top.equalTo(contentView).offset(70.0)
             make.size.equalTo(CGSize(width: 140, height: 30))
         }
         titleTextLabel.snp.makeConstraints { make in
             make.top.equalTo(logoImage.snp.bottom).offset(20)
-            make.left.equalTo(mainScrollView.snp.left)
-            make.right.equalTo(mainScrollView.snp.right)
+            make.left.equalTo(contentView.snp.left)
+            make.right.equalTo(contentView.snp.right)
         }
         collectionView.snp.makeConstraints { make in
-            make.left.equalTo(mainScrollView.snp.left)
-            make.right.equalTo(mainScrollView.snp.right)
+            make.left.equalTo(contentView.snp.left)
+            make.right.equalTo(contentView.snp.right)
             make.top.equalTo(titleTextLabel.snp.bottom).offset(10)
-            make.bottom.equalTo(mainScrollView.snp.bottom).offset(-30)
+            make.bottom.equalTo(contentView.snp.bottom).offset(-30)
         }
     }
 
