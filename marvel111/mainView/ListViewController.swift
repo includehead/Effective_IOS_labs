@@ -26,7 +26,10 @@ extension UIImage {
 
 final class ListViewController: UIViewController {
     
-    private var offset: Int = 0
+    private var offset: Int = 0 {
+        willSet { NSLog("\nNew offset = \(newValue)\n") }
+    }
+    private var isFetchingData = false
     
     private let background = BackgroundView(frame: .zero)
     private var currentSelectedItemIndex = 0
@@ -42,6 +45,8 @@ final class ListViewController: UIViewController {
         refreshControl.backgroundColor = .systemGray
         refreshControl.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
         mainScrollView.refreshControl = refreshControl
+        mainScrollView.showsVerticalScrollIndicator = false
+        mainScrollView.showsHorizontalScrollIndicator = false
         return mainScrollView
     }()
     
@@ -81,9 +86,9 @@ final class ListViewController: UIViewController {
     
     let realm = try? Realm()
     
-    private lazy var charactersArray: [CharacterModel] = [] {
+    private lazy var charactersArray: [CharacterModel?] = [] {
         willSet {
-            try? realm?.write { realm?.add(newValue, update: .modified) }
+            try? realm?.write { realm?.add(newValue.compactMap { $0 }, update: .modified) }
         }
         didSet {
             collectionView.reloadData()
@@ -91,22 +96,37 @@ final class ListViewController: UIViewController {
     }
     
     private lazy var getMoreCharacters: () -> Void = {
-        getCharacters(offset: self.offset) { [weak self] result in
-            switch result {
-            case .success(let characterModelArray):
-                self?.charactersArray.append(contentsOf: characterModelArray)
-                self?.offset += characterModelArray.count
-            case .failure(let error):
-                self?.charactersArray = {
-                    guard let charactersResults = self?.realm?.objects(CharacterModel.self) else { return [] }
-                    return Array(charactersResults)
-                }()
+        let workItem = DispatchWorkItem {
+            getCharacters(offset: self.offset) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let characterModelArray):
+                    if  self.charactersArray.count > 0 {
+                        self.charactersArray.remove(at: self.charactersArray.count - 1)
+                    }
+                    self.charactersArray.append(contentsOf: characterModelArray)
+                    self.charactersArray.append(nil)
+                    self.offset += characterModelArray.count
+                case .failure(let error):
+                    self.charactersArray = {
+                        guard let charactersResults = self.realm?.objects(CharacterModel.self) else { return [] }
+                        return Array(charactersResults)
+                    }()
+                }
             }
+        }
+        workItem.notify(queue: .main) { [weak self] in
+            self?.isFetchingData = false
+        }
+        if !self.isFetchingData {
+            self.isFetchingData = true
+            DispatchQueue.main.async(execute: workItem)
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        getMoreCharacters()
         title = ""
         navigationController?.navigationBar.tintColor = .white
         view.addSubview(mainScrollView)
@@ -127,9 +147,12 @@ final class ListViewController: UIViewController {
        // Code to refresh collectionView
         offset = 0
         charactersArray.removeAll(keepingCapacity: true)
-        DispatchQueue.main.async { [weak self] in
-            self?.collectionView.reloadData()
-            self?.mainScrollView.refreshControl?.endRefreshing()
+        DispatchQueue.global().async { [weak self] in
+            self?.getMoreCharacters()
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.reloadData()
+                self?.mainScrollView.refreshControl?.endRefreshing()
+            }
         }
     }
 
@@ -173,7 +196,6 @@ final class ListViewController: UIViewController {
 extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if charactersArray.isEmpty { getMoreCharacters() }
         return charactersArray.count
     }
 
@@ -199,27 +221,26 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         present(fullScreenImageViewController, animated: true)
         self.fullScreenTransitionManager = fullScreenTransitionManager
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == charactersArray.count - 1 {
             // Last cell is visible
             getMoreCharacters()
-            collectionView.reloadData()
-            
         }
-    }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard scrollView is UICollectionView else { return }
-        let centerPoint = CGPoint(x: scrollView.frame.size.width / 2 + scrollView.contentOffset.x,
-                                  y: scrollView.frame.size.height / 2 + scrollView.contentOffset.y)
+        let centerPoint = CGPoint(x: collectionView.frame.size.width / 2 + collectionView.contentOffset.x,
+                                  y: collectionView.frame.size.height / 2 + collectionView.contentOffset.y)
         if let indexPath = collectionView.indexPathForItem(at: centerPoint) {
             currentSelectedItemIndex = indexPath.row
             let cache = ImageCache.default
-            cache.retrieveImage(forKey: "\(charactersArray[indexPath.row].heroId)") { result in
+            cache.retrieveImage(forKey: "\(charactersArray[indexPath.row]?.heroId ?? 0)") { result in
                 switch result {
                 case .success(let value):
-                    self.background.setTriangleColor(value.image?.averageColor ?? .clear)
+                    DispatchQueue.global(qos: .background).async {
+                        let color = value.image?.averageColor ?? .clear
+                        DispatchQueue.main.async {
+                            self.background.setTriangleColor(color)
+                        }
+                    }
                 case .failure(let error):
                     print("Error: \(error)")
                 }

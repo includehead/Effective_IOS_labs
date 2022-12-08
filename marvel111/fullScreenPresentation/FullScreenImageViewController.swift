@@ -41,10 +41,11 @@ class FullScreenImageViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    func setup(characterData: CharacterModel, tag: Int) {
+    func setup(characterData: CharacterModel?, tag: Int) {
         heroImageView.image = .init()
         wrapperView.tag = tag
-        getCharacter(id: characterData.heroId) { [weak self] result in
+        guard let data = characterData else { return }
+        getCharacter(id: data.heroId) { [weak self] result in
             switch result {
             case .success(let characterModel):
                 self?.heroImageView.kf.setImage(with: URL(string: characterModel.imageLink) ?? URL(string: "http://127.0.0.1"))
