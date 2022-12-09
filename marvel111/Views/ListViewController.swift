@@ -1,35 +1,11 @@
 import UIKit
 import SnapKit
 import Alamofire
-import UIImageColors
 import Kingfisher
-import RealmSwift
-
-extension UIImage {
-    var averageColor: UIColor? {
-        guard let inputImage = CIImage(image: self) else { return nil }
-        let extentVector = CIVector(x: inputImage.extent.origin.x, y: inputImage.extent.origin.y,
-                                    z: inputImage.extent.size.width, w: inputImage.extent.size.height)
-
-        guard let filter = CIFilter(name: "CIAreaAverage", parameters: [kCIInputImageKey: inputImage, kCIInputExtentKey: extentVector])
-        else { return nil }
-        guard let outputImage = filter.outputImage else { return nil }
-
-        var bitmap = [UInt8](repeating: 0, count: 4)
-        let context = CIContext(options: [.workingColorSpace: kCFNull!])
-        context.render(outputImage, toBitmap: &bitmap, rowBytes: 4, bounds: CGRect(x: 0, y: 0, width: 1, height: 1), format: .RGBA8, colorSpace: nil)
-
-        return UIColor(red: CGFloat(bitmap[0]) / 255, green: CGFloat(bitmap[1]) / 255,
-                       blue: CGFloat(bitmap[2]) / 255, alpha: CGFloat(bitmap[3]) / 255)
-    }
-}
 
 final class ListViewController: UIViewController {
     
-    private var offset: Int = 0 {
-        willSet { NSLog("\nNew offset = \(newValue)\n") }
-    }
-    private var isFetchingData = false
+    private let viewModel = ViewModel()
     
     private let background = BackgroundView(frame: .zero)
     private var currentSelectedItemIndex = 0
@@ -84,49 +60,21 @@ final class ListViewController: UIViewController {
         return collectionView
     }()
     
-    let realm = try? Realm()
-    
     private lazy var charactersArray: [CharacterModel?] = [] {
-        willSet {
-            try? realm?.write { realm?.add(newValue.compactMap { $0 }, update: .modified) }
-        }
         didSet {
             collectionView.reloadData()
         }
     }
     
-    private lazy var getMoreCharacters: () -> Void = {
-        let workItem = DispatchWorkItem {
-            getCharacters(offset: self.offset) { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case .success(let characterModelArray):
-                    if  self.charactersArray.count > 0 {
-                        self.charactersArray.remove(at: self.charactersArray.count - 1)
-                    }
-                    self.charactersArray.append(contentsOf: characterModelArray)
-                    self.charactersArray.append(nil)
-                    self.offset += characterModelArray.count
-                case .failure(let error):
-                    self.charactersArray = {
-                        guard let charactersResults = self.realm?.objects(CharacterModel.self) else { return [] }
-                        return Array(charactersResults)
-                    }()
-                }
-            }
-        }
-        workItem.notify(queue: .main) { [weak self] in
-            self?.isFetchingData = false
-        }
-        if !self.isFetchingData {
-            self.isFetchingData = true
-            DispatchQueue.main.async(execute: workItem)
-        }
+    @objc func refresh() {
+       // Code to refresh collectionView
+        viewModel.refresh()
+        mainScrollView.refreshControl?.endRefreshing()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        getMoreCharacters()
+//        getMoreCharacters()
         title = ""
         navigationController?.navigationBar.tintColor = .white
         view.addSubview(mainScrollView)
@@ -141,19 +89,6 @@ final class ListViewController: UIViewController {
         mainScrollView.alwaysBounceHorizontal = false
         mainScrollView.alwaysBounceVertical = true
         setLayout()
-    }
-    
-    @objc func refresh() {
-       // Code to refresh collectionView
-        offset = 0
-        charactersArray.removeAll(keepingCapacity: true)
-        DispatchQueue.global().async { [weak self] in
-            self?.getMoreCharacters()
-            DispatchQueue.main.async { [weak self] in
-                self?.collectionView.reloadData()
-                self?.mainScrollView.refreshControl?.endRefreshing()
-            }
-        }
     }
 
     private func setLayout() {
@@ -225,7 +160,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == charactersArray.count - 1 {
             // Last cell is visible
-            getMoreCharacters()
+//            getMoreCharacters()
         }
         let centerPoint = CGPoint(x: collectionView.frame.size.width / 2 + collectionView.contentOffset.x,
                                   y: collectionView.frame.size.height / 2 + collectionView.contentOffset.y)
