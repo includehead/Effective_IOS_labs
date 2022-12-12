@@ -3,6 +3,8 @@ import SnapKit
 
 class FullScreenImageViewController: UIViewController {
     
+    private let repository = Repository()
+    
     private let textOffset = 30
     
     private let wrapperView: UIView = {
@@ -41,14 +43,16 @@ class FullScreenImageViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    func setup(characterData: CharacterModel?, tag: Int) {
+    func setup(characterData: CharacterModel, tag: Int) {
         heroImageView.image = .init()
+        heroDescriptionTextLabel.text = ""
+        heroNameTextLabel.text = ""
         wrapperView.tag = tag
-        guard let data = characterData else { return }
-        getCharacter(id: data.heroId) { [weak self] result in
+        repository.getCharacter(id: characterData.heroId) { [weak self] result in
             switch result {
-            case .success(let characterModel):
-                self?.heroImageView.kf.setImage(with: URL(string: characterModel.imageLink) ?? URL(string: "http://127.0.0.1"))
+            case .success(let characterModelWrapped):
+                guard let characterModel = characterModelWrapped else { return }
+                self?.heroImageView.kf.setImage(with: URL(string: characterModel.imageLink))
                 self?.heroNameTextLabel.text = characterModel.name
                 self?.heroDescriptionTextLabel.text = characterModel.characterDescription
             case .failure(let error):

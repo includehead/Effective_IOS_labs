@@ -2,12 +2,6 @@ import UIKit
 import Kingfisher
 
 final class CollectionViewCell: UICollectionViewCell {
-    
-    private let spinner: UIActivityIndicatorView = {
-        let spinner = UIActivityIndicatorView(style: .large)
-        spinner.color = .white
-        return spinner
-    }()
 
     private let imageView: UIImageView = {
         let imageView = UIImageView()
@@ -27,18 +21,19 @@ final class CollectionViewCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .none
         imageView.kf.indicatorType = .activity
         setUpLayout()
     }
 
-    func setup(characterData: CharacterModel?, and tag: Int) {
+    func setup(characterModel: CharacterModel?, and tag: Int) {
         imageView.image = .init()
         textLabel.text = ""
+        guard let characterData = characterModel else { return }
         imageView.layoutIfNeeded()
         let processor = DownsamplingImageProcessor(size: imageView.bounds.size)
                      |> RoundCornerImageProcessor(cornerRadius: 20)
-        guard let data = characterData else { spinner.startAnimating(); return }
-        let resource = ImageResource(downloadURL: URL(string: data.imageLink) ?? URL(string: "http://127.0.0.1")!, cacheKey: "\(data.heroId)")
+        let resource = ImageResource(downloadURL: URL(string: characterData.imageLink) ?? URL(string: "http://127.0.0.1")!, cacheKey: "\(characterData.heroId)")
         imageView.kf.setImage(
             with: resource,
             placeholder: UIImage(named: "placeholder"),
@@ -46,8 +41,7 @@ final class CollectionViewCell: UICollectionViewCell {
                 .processor(processor),
                 .cacheOriginalImage
             ]
-        ) { [weak self] result in
-            self?.spinner.stopAnimating()
+        ) { result in
             switch result {
             case .success(let value):
                 NSLog("Task done for: \(value.source.url?.absoluteString ?? "")")
@@ -56,17 +50,12 @@ final class CollectionViewCell: UICollectionViewCell {
             }
         }
         imageView.tag = tag
-        textLabel.text = data.name
+        textLabel.text = characterData.name
     }
 
     private func setUpLayout() {
         addSubview(imageView)
         addSubview(textLabel)
-        addSubview(spinner)
-        spinner.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.centerX.equalTo(self.snp.left)
-        }
         textLabel.snp.makeConstraints {
             $0.left.equalTo(self.snp.left).offset(20)
             $0.right.equalTo(self.snp.right).offset(-10)

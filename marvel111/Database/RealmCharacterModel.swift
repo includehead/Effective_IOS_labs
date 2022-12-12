@@ -1,9 +1,6 @@
-import UIKit
-import Alamofire
-import CryptoKit
 import RealmSwift
 
-final class CharacterModel: Object {
+final class RealmCharacterModel: Object {
     @Persisted var name: String
     @Persisted var characterDescription: String
     @Persisted(primaryKey: true) var heroId: Int
@@ -19,5 +16,13 @@ final class CharacterModel: Object {
         } else {
             self.imageLink = imagelink + "/portrait_uncanny.jpg"
         }
+    }
+    
+    convenience init(_ characterModel: CharacterModel) {
+        self.init()
+        self.heroId = characterModel.heroId
+        self.name = characterModel.name
+        self.characterDescription = characterModel.characterDescription
+        self.imageLink = characterModel.imageLink
     }
 }
