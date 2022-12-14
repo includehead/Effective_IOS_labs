@@ -2,24 +2,30 @@ import Alamofire
 import CryptoKit
 import Foundation
 
-class Repository {
+class CharacterRepository {
+    
+    private var database: CharacterModelDatabaseProtocol = DBManager()
+    
+    private var isThereInternetConnection = true
     
     private let baseUrl = "https://gateway.marvel.com/v1/public/characters"
     
-    func getCharacters(offset: Int = 0, _ completion: @escaping (Result<[CharacterModel]?, Error>) -> Void) {
+    func getCharacters(offset: Int = 0, _ completion: @escaping ([CharacterModel]) -> Void) {
+        guard isThereInternetConnection == true else { completion([]); return }
         AF.request(
             baseUrl,
             parameters: requestParams(offset: offset)
         ).responseDataDecodable(of: CharacterListPayload.self) { response in
             switch response.result {
             case .success(let charactersPayload):
-                guard let charactersDecodable = charactersPayload.data?.results else { completion(.success(nil)); return }
+                guard let charactersDecodable = charactersPayload.data?.results else { completion([]); return }
                 let characterModelArray: [CharacterModel] = charactersDecodable.compactMap { self.createCharacterFromDecodable(character: $0) }
-//                charactersDecodable?.forEach { characterModelArray.append(Repository.createCharacterFromDecodable(character: $0)) }
-                completion(.success(characterModelArray))
+                self.database.writeAll(characters: characterModelArray)
+                completion(characterModelArray)
             case .failure(let failure):
+                self.isThereInternetConnection = false
                 NSLog(failure.localizedDescription)
-                completion(.failure(failure))
+                completion(self.database.getAll())
             }
         }
     }
@@ -68,14 +74,14 @@ class Repository {
         let results: [CharacterPayload?]?
     }
 
-    struct CharacterPayload: Decodable {
+    private struct CharacterPayload: Decodable {
         let name: String?
         let id: Int?
-        let thumbnail: Thumbnail?
+        let thumbnail: ThumbnailPayload?
         let description: String?
     }
 
-    struct Thumbnail: Decodable {
+    private struct ThumbnailPayload: Decodable {
         let imageUrlString: String?
         let imageExtension: String?
         

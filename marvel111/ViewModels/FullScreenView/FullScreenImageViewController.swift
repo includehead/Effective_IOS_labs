@@ -1,9 +1,9 @@
 import UIKit
 import SnapKit
 
-class FullScreenImageViewController: UIViewController {
+final class FullScreenImageViewController: UIViewController {
     
-    private let repository = Repository()
+    private let viewModel = FullScreenImageViewModel()
     
     private let textOffset = 30
     
@@ -48,18 +48,14 @@ class FullScreenImageViewController: UIViewController {
         heroDescriptionTextLabel.text = ""
         heroNameTextLabel.text = ""
         wrapperView.tag = tag
-        repository.getCharacter(id: characterData.heroId) { [weak self] result in
-            switch result {
-            case .success(let characterModelWrapped):
-                guard let characterModel = characterModelWrapped else { return }
-                self?.heroImageView.kf.setImage(with: URL(string: characterModel.imageLink))
-                self?.heroNameTextLabel.text = characterModel.name
-                self?.heroDescriptionTextLabel.text = characterModel.characterDescription
-            case .failure(let error):
-                NSLog(error.localizedDescription)
-            }
+        // set image
+        viewModel.getCharacter(id: characterData.heroId) { [weak self] character in
+            guard let self = self else { return }
+            guard let character = character else { return }
+            self.heroImageView.kf.setImage(with: URL(string: character.imageLink))
+            self.heroNameTextLabel.text = character.name
+            self.heroDescriptionTextLabel.text = character.characterDescription
         }
-
     }
     
     required init?(coder: NSCoder) {

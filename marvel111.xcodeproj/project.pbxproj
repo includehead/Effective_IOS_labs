@@ -7,15 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5540508A29429E0A004C80A0 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5540508929429E0A004C80A0 /* Repository.swift */; };
+		5540508A29429E0A004C80A0 /* CharacterRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5540508929429E0A004C80A0 /* CharacterRepository.swift */; };
 		5540508E2942A6E0004C80A0 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5540508D2942A6E0004C80A0 /* MainViewModel.swift */; };
 		554050922942B932004C80A0 /* UIImage+AverageColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554050912942B932004C80A0 /* UIImage+AverageColor.swift */; };
 		554050952945708E004C80A0 /* AF + GenericPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554050942945708E004C80A0 /* AF + GenericPayload.swift */; };
 		5540509729458A07004C80A0 /* CollectionViewLoadingIndicatorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5540509629458A07004C80A0 /* CollectionViewLoadingIndicatorCell.swift */; };
 		5540509A294597BA004C80A0 /* DBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55405099294597BA004C80A0 /* DBManager.swift */; };
-		5540509C294597EE004C80A0 /* DatabaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5540509B294597EE004C80A0 /* DatabaseProtocol.swift */; };
+		5540509C294597EE004C80A0 /* CharacterModelDatabaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5540509B294597EE004C80A0 /* CharacterModelDatabaseProtocol.swift */; };
 		554050A02946A403004C80A0 /* MainViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5540509F2946A403004C80A0 /* MainViewModelProtocol.swift */; };
 		554050A22946A93C004C80A0 /* RealmCharacterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554050A12946A93C004C80A0 /* RealmCharacterModel.swift */; };
+		554050A429498550004C80A0 /* FullScreenImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554050A329498550004C80A0 /* FullScreenImageViewModel.swift */; };
 		554AF2802901762E003CC67A /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 554AF27029017629003CC67A /* Roboto-Medium.ttf */; };
 		554AF2812901762E003CC67A /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 554AF27129017629003CC67A /* Roboto-BlackItalic.ttf */; };
 		554AF2822901762E003CC67A /* Roboto-Condensed.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 554AF2722901762A003CC67A /* Roboto-Condensed.ttf */; };
@@ -65,15 +66,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5540508929429E0A004C80A0 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		5540508929429E0A004C80A0 /* CharacterRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterRepository.swift; sourceTree = "<group>"; };
 		5540508D2942A6E0004C80A0 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		554050912942B932004C80A0 /* UIImage+AverageColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+AverageColor.swift"; sourceTree = "<group>"; };
 		554050942945708E004C80A0 /* AF + GenericPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AF + GenericPayload.swift"; sourceTree = "<group>"; };
 		5540509629458A07004C80A0 /* CollectionViewLoadingIndicatorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewLoadingIndicatorCell.swift; sourceTree = "<group>"; };
 		55405099294597BA004C80A0 /* DBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBManager.swift; sourceTree = "<group>"; };
-		5540509B294597EE004C80A0 /* DatabaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseProtocol.swift; sourceTree = "<group>"; };
+		5540509B294597EE004C80A0 /* CharacterModelDatabaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterModelDatabaseProtocol.swift; sourceTree = "<group>"; };
 		5540509F2946A403004C80A0 /* MainViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModelProtocol.swift; sourceTree = "<group>"; };
 		554050A12946A93C004C80A0 /* RealmCharacterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmCharacterModel.swift; sourceTree = "<group>"; };
+		554050A329498550004C80A0 /* FullScreenImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewModel.swift; sourceTree = "<group>"; };
 		554AF27029017629003CC67A /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		554AF27129017629003CC67A /* Roboto-BlackItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-BlackItalic.ttf"; sourceTree = "<group>"; };
 		554AF2722901762A003CC67A /* Roboto-Condensed.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Condensed.ttf"; sourceTree = "<group>"; };
@@ -125,7 +127,7 @@
 		5540508829429C2E004C80A0 /* Network */ = {
 			isa = PBXGroup;
 			children = (
-				5540508929429E0A004C80A0 /* Repository.swift */,
+				5540508929429E0A004C80A0 /* CharacterRepository.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -157,7 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				55405099294597BA004C80A0 /* DBManager.swift */,
-				5540509B294597EE004C80A0 /* DatabaseProtocol.swift */,
+				5540509B294597EE004C80A0 /* CharacterModelDatabaseProtocol.swift */,
 				554050A12946A93C004C80A0 /* RealmCharacterModel.swift */,
 			);
 			path = Database;
@@ -241,6 +243,7 @@
 			children = (
 				55F9D53B2911AFCF00D02DEA /* FullScreenTransitionManager.swift */,
 				55F9D5402911B6CC00D02DEA /* FullScreenImageViewController.swift */,
+				554050A329498550004C80A0 /* FullScreenImageViewModel.swift */,
 			);
 			path = FullScreenView;
 			sourceTree = "<group>";
@@ -384,10 +387,11 @@
 				554AF2942901D931003CC67A /* CollectionViewCell.swift in Sources */,
 				554AF292290179B2003CC67A /* PagingCollectionViewLayout.swift in Sources */,
 				5540508E2942A6E0004C80A0 /* MainViewModel.swift in Sources */,
-				5540508A29429E0A004C80A0 /* Repository.swift in Sources */,
+				5540508A29429E0A004C80A0 /* CharacterRepository.swift in Sources */,
 				55F9D53C2911AFCF00D02DEA /* FullScreenTransitionManager.swift in Sources */,
 				F7BDDA9D2906627400D4E7FE /* BackgroundView.swift in Sources */,
 				55B9FF6C290098C100F64053 /* MainViewController.swift in Sources */,
+				554050A429498550004C80A0 /* FullScreenImageViewModel.swift in Sources */,
 				554050A22946A93C004C80A0 /* RealmCharacterModel.swift in Sources */,
 				554050952945708E004C80A0 /* AF + GenericPayload.swift in Sources */,
 				5540509A294597BA004C80A0 /* DBManager.swift in Sources */,
@@ -395,7 +399,7 @@
 				55F9D5412911B6CC00D02DEA /* FullScreenImageViewController.swift in Sources */,
 				554050A02946A403004C80A0 /* MainViewModelProtocol.swift in Sources */,
 				F7BDDA9F2906764400D4E7FE /* Constants.swift in Sources */,
-				5540509C294597EE004C80A0 /* DatabaseProtocol.swift in Sources */,
+				5540509C294597EE004C80A0 /* CharacterModelDatabaseProtocol.swift in Sources */,
 				5540509729458A07004C80A0 /* CollectionViewLoadingIndicatorCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

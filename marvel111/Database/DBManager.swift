@@ -1,18 +1,19 @@
 import RealmSwift
+import Foundation
 
 final class DBManager {
     
     let realm: Realm?
     
     init() {
-        realm = try? Realm()
+        self.realm = try? Realm()
     }
     
     func write(object: Object) {
         
     }
     
-    func getCharacter<T: Object> (id: Int) -> T? {
+    func get<T: Object> (id: Int) -> T? {
         return nil
     }
     
@@ -21,7 +22,7 @@ final class DBManager {
     }
 }
 
-extension DBManager: DatabaseProtocol {
+extension DBManager: CharacterModelDatabaseProtocol {
     func getCharacter(id: Int) -> CharacterModel? {
         guard let model = realm?.object(ofType: RealmCharacterModel.self, forPrimaryKey: id) else { return nil }
         return CharacterModel(realmModel: model)
@@ -33,10 +34,13 @@ extension DBManager: DatabaseProtocol {
     
     func writeAll(characters: [CharacterModel]) {
         let modelsArray = characters.map { RealmCharacterModel($0) }
-        try? realm?.write { realm?.add(modelsArray, update: .modified) }
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            try? self.realm?.write { self.realm?.add(modelsArray, update: .modified) }
+        }
     }
     
-    func getAll() -> [CharacterModel]? {
+    func getAll() -> [CharacterModel] {
         guard let charactersResults = self.realm?.objects(RealmCharacterModel.self) else { return [] }
         return charactersResults.compactMap { CharacterModel(realmModel: $0) }
     }

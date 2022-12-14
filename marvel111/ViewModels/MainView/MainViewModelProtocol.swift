@@ -1,7 +1,9 @@
 import Foundation
 
-protocol MainViewModelProtocol {
-    var collectionViewItems: [CollectionCellItem] { get }
+protocol MainViewModelProtocol: AnyObject {
+    var items: [CollectionCellItem] { get }
+    var itemsPublisher: Published<[CollectionCellItem]>.Publisher { get }
+    var isLoading: Bool { get }
     func loadMoreCharacters()
     func refresh()
 }

@@ -6,15 +6,15 @@ enum CollectionCellItem {
     case loading
 }
 
-final class MainViewModel {
+final class MainViewModel: MainViewModelProtocol {
     
-    var database: DatabaseProtocol = DBManager()
-    
-    var isFetchingData = false
+    var isLoading = false
     
     @Published private(set) var items: [CollectionCellItem] = []
     
-    private let repository = Repository()
+    var itemsPublisher: Published<[CollectionCellItem]>.Publisher { $items }
+    
+    private let repository = CharacterRepository()
     
     private var offset: Int = 0 {
         willSet { NSLog("\nNew offset = \(newValue)\n") }
@@ -23,30 +23,20 @@ final class MainViewModel {
     let realm = try? Realm()
     
     func loadMoreCharacters() {
-        let workItem = DispatchWorkItem { [self] in
-            repository.getCharacters(offset: self.offset) { [weak self] result in
-                self?.items.removeLast()
+        guard !isLoading else { return }
+        isLoading = true
+        items.append(.loading)
+        repository.getCharacters(offset: self.offset) { [weak self] characterModelArray in
+            DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                switch result {
-                case .success(let characterModelArray):
-                    guard let characterModelArrayUnwrapped = characterModelArray else { return }
-                    let newHeroesArray = characterModelArrayUnwrapped.map { CollectionCellItem.hero(model: $0)}
-                    self.items.append(contentsOf: newHeroesArray)
-                    self.database.writeAll(characters: characterModelArrayUnwrapped)
-                    self.offset += characterModelArrayUnwrapped.count
-                case .failure(_:):
-                    self.items = {
-                        guard let charactersResults = self.database.getAll() else { return [] }
-                        return Array(charactersResults.map { .hero(model: $0) })
-                    }()
+                if !self.items.isEmpty {
+                    self.items.removeLast()
                 }
-                self.isFetchingData = false
+                let newHeroesArray = characterModelArray.map { CollectionCellItem.hero(model: $0) }
+                self.items.append(contentsOf: newHeroesArray)
+                self.offset += characterModelArray.count
+                self.isLoading = false
             }
-        }
-        if !self.isFetchingData {
-            self.isFetchingData = true
-            items.append(.loading)
-            DispatchQueue.main.async(execute: workItem)
         }
     }
     

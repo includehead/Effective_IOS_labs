@@ -7,7 +7,7 @@ import Combine
 final class ListViewController: UIViewController {
     
     private var subscriptions = Set<AnyCancellable>()
-    private let viewModel = MainViewModel()
+    private let viewModel: MainViewModelProtocol = MainViewModel()
     
     private let background = BackgroundView(frame: .zero)
     private var currentSelectedItemIndex = 0
@@ -61,12 +61,6 @@ final class ListViewController: UIViewController {
         collectionView.delegate = self
         return collectionView
     }()
-    
-    private lazy var items: [CollectionCellItem] = [] {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
     
     @objc func refresh() {
        // Code to refresh collectionView
@@ -127,7 +121,9 @@ final class ListViewController: UIViewController {
     }
     
     private func setupBindings() {
-        viewModel.$items.assign(to: \.items, on: self).store(in: &subscriptions)
+        viewModel.itemsPublisher.sink { [weak self] _ in
+            self?.collectionView.reloadData()
+        }.store(in: &subscriptions)
     }
 
     private func registerCollectionViewCells() {
@@ -139,7 +135,7 @@ final class ListViewController: UIViewController {
     }
     
     func changeTriangleColor(currentItemIndex: Int) {
-        switch items[currentItemIndex] {
+        switch viewModel.items[currentItemIndex] {
         case .hero(model: let model):
             let cache = ImageCache.default
             cache.retrieveImage(forKey: "\(model.heroId)") { result in
@@ -165,13 +161,13 @@ final class ListViewController: UIViewController {
 extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items.count
+        return viewModel.items.count
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let tag = indexPath.item + 1
-        switch items[indexPath.item] {
+        switch viewModel.items[indexPath.item] {
         case .hero(model: let model):
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: String(describing: CollectionViewCell.self),
@@ -192,7 +188,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch items[indexPath.item] {
+        switch viewModel.items[indexPath.item] {
         case .hero(model: let model):
             let tag = indexPath.row + 1
             let characterData = model
@@ -209,7 +205,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row == items.count - 1 {
+        if indexPath.row == viewModel.items.count - 1 {
             // Last cell is visible
             viewModel.loadMoreCharacters()
         }
@@ -222,7 +218,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = Constants.collectionViewLayoutItemSize
-        let cellWidth = (indexPath.row == items.count && viewModel.isFetchingData ) ? 40 : size.width
+        let cellWidth = (indexPath.row == viewModel.items.count && viewModel.isLoading ) ? 40 : size.width
         return CGSize(width: cellWidth, height: size.height)
     }
 }

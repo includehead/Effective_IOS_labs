@@ -5,7 +5,6 @@ final class CollectionViewCell: UICollectionViewCell {
 
     private let imageView: UIImageView = {
         let imageView = UIImageView()
-//        imageView.backgroundColor = .lightGray
         imageView.layer.cornerRadius = 15.0
         imageView.clipsToBounds = true
         return imageView
