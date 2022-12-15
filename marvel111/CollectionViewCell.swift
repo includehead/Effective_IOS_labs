@@ -1,16 +1,11 @@
-//
-//  CollectionViewCell.swift
-//  marvel111
-//
-//  Created by Valery Shestakov on 21.10.2022.
-//
-
 import UIKit
+import Kingfisher
 
 final class CollectionViewCell: UICollectionViewCell {
-    
+
     private let imageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.backgroundColor = .lightGray
         imageView.layer.cornerRadius = 15.0
         imageView.clipsToBounds = true
         return imageView
@@ -23,17 +18,34 @@ final class CollectionViewCell: UICollectionViewCell {
         textLabel.shadowOffset = CGSize(width: 5, height: 5)
         return textLabel
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setUpLayout()
     }
-    
-    func setup(heroData: HeroModel) {
-        imageView.image = heroData.image ?? .init()
+
+    func setup(heroData: HeroModel, and tag: Int) {
+        imageView.image = .init()
+        imageView.layoutIfNeeded()
+        let processor = DownsamplingImageProcessor(size: imageView.bounds.size)
+                     |> RoundCornerImageProcessor(cornerRadius: 20)
+        imageView.kf.setImage(
+            with: heroData.imageLink ?? URL.init(string: ""),
+            options: [
+                .processor(processor)
+            ]
+        ) {
+            switch $0 {
+            case .success(let value):
+                NSLog("Task done for: \(value.source.url?.absoluteString ?? "")")
+            case .failure(let error):
+                NSLog("Job failed: \(error.localizedDescription)")
+            }
+        }
+        imageView.tag = tag
         textLabel.text = heroData.name
     }
-    
+
     private func setUpLayout() {
         addSubview(imageView)
         addSubview(textLabel)
@@ -45,7 +57,7 @@ final class CollectionViewCell: UICollectionViewCell {
             $0.edges.equalToSuperview()
         }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

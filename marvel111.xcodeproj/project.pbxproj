@@ -31,6 +31,10 @@
 		55B9FF582900937F00F64053 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B9FF572900937F00F64053 /* Assets.xcassets */; };
 		55B9FF5B2900937F00F64053 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55B9FF592900937F00F64053 /* LaunchScreen.storyboard */; };
 		55B9FF6C290098C100F64053 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B9FF6B290098C100F64053 /* ListViewController.swift */; };
+		55F9D53A290AA1BE00D02DEA /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 55F9D539290AA1BE00D02DEA /* Kingfisher */; };
+		55F9D53C2911AFCF00D02DEA /* FullScreenTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F9D53B2911AFCF00D02DEA /* FullScreenTransitionManager.swift */; };
+		55F9D53F2911B15E00D02DEA /* TinyConstraints in Frameworks */ = {isa = PBXBuildFile; productRef = 55F9D53E2911B15E00D02DEA /* TinyConstraints */; };
+		55F9D5412911B6CC00D02DEA /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F9D5402911B6CC00D02DEA /* FullScreenImageViewController.swift */; };
 		F7BDDA9D2906627400D4E7FE /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BDDA9C2906627400D4E7FE /* BackgroundView.swift */; };
 		F7BDDA9F2906764400D4E7FE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BDDA9E2906764400D4E7FE /* Constants.swift */; };
 		F7BDDAA229068BD000D4E7FE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F7BDDAA129068BD000D4E7FE /* SnapKit */; };
@@ -76,6 +80,8 @@
 		55B9FF5A2900937F00F64053 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		55B9FF5C2900937F00F64053 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55B9FF6B290098C100F64053 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		55F9D53B2911AFCF00D02DEA /* FullScreenTransitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenTransitionManager.swift; sourceTree = "<group>"; };
+		55F9D5402911B6CC00D02DEA /* FullScreenImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewController.swift; sourceTree = "<group>"; };
 		F7BDDA9C2906627400D4E7FE /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		F7BDDA9E2906764400D4E7FE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,7 +91,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55F9D53A290AA1BE00D02DEA /* Kingfisher in Frameworks */,
 				F7BDDAA229068BD000D4E7FE /* SnapKit in Frameworks */,
+				55F9D53F2911B15E00D02DEA /* TinyConstraints in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +148,8 @@
 				F7BDDA9E2906764400D4E7FE /* Constants.swift */,
 				55B9FF6B290098C100F64053 /* ListViewController.swift */,
 				554AF2932901D931003CC67A /* CollectionViewCell.swift */,
+				55F9D53B2911AFCF00D02DEA /* FullScreenTransitionManager.swift */,
+				55F9D5402911B6CC00D02DEA /* FullScreenImageViewController.swift */,
 				F7BDDA9C2906627400D4E7FE /* BackgroundView.swift */,
 				554AF291290179B2003CC67A /* PagingCollectionViewLayout.swift */,
 				55B9FF572900937F00F64053 /* Assets.xcassets */,
@@ -157,6 +167,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55B9FF5F2900937F00F64053 /* Build configuration list for PBXNativeTarget "marvel111" */;
 			buildPhases = (
+				55F9D537290A948700D02DEA /* swiftlint */,
 				55B9FF472900937E00F64053 /* Sources */,
 				55B9FF482900937E00F64053 /* Frameworks */,
 				55B9FF492900937E00F64053 /* Resources */,
@@ -169,6 +180,8 @@
 			name = marvel111;
 			packageProductDependencies = (
 				F7BDDAA129068BD000D4E7FE /* SnapKit */,
+				55F9D539290AA1BE00D02DEA /* Kingfisher */,
+				55F9D53E2911B15E00D02DEA /* TinyConstraints */,
 			);
 			productName = marvel111;
 			productReference = 55B9FF4B2900937E00F64053 /* marvel111.app */;
@@ -200,6 +213,8 @@
 			mainGroup = 55B9FF422900937D00F64053;
 			packageReferences = (
 				F7BDDAA029068BD000D4E7FE /* XCRemoteSwiftPackageReference "SnapKit" */,
+				55F9D538290AA1BE00D02DEA /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				55F9D53D2911B15E00D02DEA /* XCRemoteSwiftPackageReference "TinyConstraints" */,
 			);
 			productRefGroup = 55B9FF4C2900937E00F64053 /* Products */;
 			projectDirPath = "";
@@ -238,6 +253,28 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		55F9D537290A948700D02DEA /* swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		55B9FF472900937E00F64053 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -246,10 +283,12 @@
 				55B9FF4F2900937E00F64053 /* AppDelegate.swift in Sources */,
 				554AF2942901D931003CC67A /* CollectionViewCell.swift in Sources */,
 				554AF292290179B2003CC67A /* PagingCollectionViewLayout.swift in Sources */,
+				55F9D53C2911AFCF00D02DEA /* FullScreenTransitionManager.swift in Sources */,
 				F7BDDA9D2906627400D4E7FE /* BackgroundView.swift in Sources */,
 				554AF2982905A957003CC67A /* HeroArray.swift in Sources */,
 				55B9FF6C290098C100F64053 /* ListViewController.swift in Sources */,
 				554AF2962905A828003CC67A /* HeroModel.swift in Sources */,
+				55F9D5412911B6CC00D02DEA /* FullScreenImageViewController.swift in Sources */,
 				F7BDDA9F2906764400D4E7FE /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -470,6 +509,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		55F9D538290AA1BE00D02DEA /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+		55F9D53D2911B15E00D02DEA /* XCRemoteSwiftPackageReference "TinyConstraints" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/roberthein/TinyConstraints";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		F7BDDAA029068BD000D4E7FE /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -481,6 +536,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		55F9D539290AA1BE00D02DEA /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55F9D538290AA1BE00D02DEA /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		55F9D53E2911B15E00D02DEA /* TinyConstraints */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55F9D53D2911B15E00D02DEA /* XCRemoteSwiftPackageReference "TinyConstraints" */;
+			productName = TinyConstraints;
+		};
 		F7BDDAA129068BD000D4E7FE /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F7BDDAA029068BD000D4E7FE /* XCRemoteSwiftPackageReference "SnapKit" */;
