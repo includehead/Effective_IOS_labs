@@ -84,7 +84,7 @@ final class ListViewController: UIViewController {
         mainScrollView.contentInsetAdjustmentBehavior = .never
         mainScrollView.alwaysBounceHorizontal = false
         mainScrollView.alwaysBounceVertical = true
-        viewModel.loadMoreCharacters()
+        viewModel.moreDataIsNeeded()
         setLayout()
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
@@ -207,7 +207,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == viewModel.items.count - 1 {
             // Last cell is visible
-            viewModel.loadMoreCharacters()
+            viewModel.moreDataIsNeeded()
         }
         let centerPoint = CGPoint(x: collectionView.frame.size.width / 2 + collectionView.contentOffset.x,
                                   y: collectionView.frame.size.height / 2 + collectionView.contentOffset.y)

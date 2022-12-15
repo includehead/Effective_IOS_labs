@@ -22,7 +22,7 @@ final class MainViewModel: MainViewModelProtocol {
     
     let realm = try? Realm()
     
-    func loadMoreCharacters() {
+    private func loadMoreCharacters() {
         guard !isLoading else { return }
         isLoading = true
         items.append(.loading)
@@ -38,6 +38,10 @@ final class MainViewModel: MainViewModelProtocol {
                 self.isLoading = false
             }
         }
+    }
+    
+    func moreDataIsNeeded() {
+        loadMoreCharacters()
     }
     
     func refresh() {

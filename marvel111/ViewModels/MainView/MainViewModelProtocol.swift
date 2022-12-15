@@ -4,6 +4,6 @@ protocol MainViewModelProtocol: AnyObject {
     var items: [CollectionCellItem] { get }
     var itemsPublisher: Published<[CollectionCellItem]>.Publisher { get }
     var isLoading: Bool { get }
-    func loadMoreCharacters()
     func refresh()
+    func moreDataIsNeeded()
 }
