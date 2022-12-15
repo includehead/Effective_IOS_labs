@@ -3,6 +3,7 @@ import SnapKit
 import Alamofire
 import UIImageColors
 import Kingfisher
+import RealmSwift
 
 extension UIImage {
     var averageColor: UIColor? {
@@ -25,7 +26,10 @@ extension UIImage {
 
 final class ListViewController: UIViewController {
     
-    private var offset: Int = 0
+    private var offset: Int = 0 {
+        willSet { NSLog("\nNew offset = \(newValue)\n") }
+    }
+    private var isFetchingData = false
     
     private let background = BackgroundView(frame: .zero)
     private var currentSelectedItemIndex = 0
@@ -33,6 +37,20 @@ final class ListViewController: UIViewController {
     private var fullScreenTransitionManager: FullScreenTransitionManager?
     
     private let fullScreenImageViewController = FullScreenImageViewController()
+    
+    private lazy var mainScrollView: UIScrollView = {
+        let mainScrollView = UIScrollView()
+        let refreshControl = UIRefreshControl()
+        refreshControl.attributedTitle = NSAttributedString(string: "Reloading data")
+        refreshControl.backgroundColor = .systemGray
+        refreshControl.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
+        mainScrollView.refreshControl = refreshControl
+        mainScrollView.showsVerticalScrollIndicator = false
+        mainScrollView.showsHorizontalScrollIndicator = false
+        return mainScrollView
+    }()
+    
+    private let contentView = UIView()
     
     private let logoImage: UIImageView = {
         let logo = UIImageView()
@@ -46,7 +64,6 @@ final class ListViewController: UIViewController {
         titleTextLabel.textColor = .white
         titleTextLabel.font = UIFont(name: "Roboto-Black", size: 37)
         titleTextLabel.textAlignment = .center
-        titleTextLabel.translatesAutoresizingMaskIntoConstraints = false
         return titleTextLabel
     }()
 
@@ -60,54 +77,113 @@ final class ListViewController: UIViewController {
         collectionView.decelerationRate = .fast
         collectionView.backgroundColor = .none
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.alwaysBounceVertical = false
         collectionView.dataSource = self
         collectionView.delegate = self
         return collectionView
     }()
     
-    private lazy var charactersArray = [CharacterModel]() {
-        didSet {collectionView.reloadData()}
+    let realm = try? Realm()
+    
+    private lazy var charactersArray: [CharacterModel?] = [] {
+        willSet {
+            try? realm?.write { realm?.add(newValue.compactMap { $0 }, update: .modified) }
+        }
+        didSet {
+            collectionView.reloadData()
+        }
     }
     
     private lazy var getMoreCharacters: () -> Void = {
-        getCharacters(offset: self.offset) { [weak self] in
-            self?.charactersArray.append(contentsOf: $0)
-            self?.offset += $0.count
+        let workItem = DispatchWorkItem {
+            getCharacters(offset: self.offset) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let characterModelArray):
+                    if  self.charactersArray.count > 0 {
+                        self.charactersArray.remove(at: self.charactersArray.count - 1)
+                    }
+                    self.charactersArray.append(contentsOf: characterModelArray)
+                    self.charactersArray.append(nil)
+                    self.offset += characterModelArray.count
+                case .failure(let error):
+                    self.charactersArray = {
+                        guard let charactersResults = self.realm?.objects(CharacterModel.self) else { return [] }
+                        return Array(charactersResults)
+                    }()
+                }
+            }
+        }
+        workItem.notify(queue: .main) { [weak self] in
+            self?.isFetchingData = false
+        }
+        if !self.isFetchingData {
+            self.isFetchingData = true
+            DispatchQueue.main.async(execute: workItem)
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        getMoreCharacters()
         title = ""
         navigationController?.navigationBar.tintColor = .white
-        view.addSubview(background)
-        view.addSubview(logoImage)
-        view.addSubview(titleTextLabel)
+        view.addSubview(mainScrollView)
+        mainScrollView.addSubview(contentView)
+        contentView.addSubview(background)
+        contentView.addSubview(logoImage)
+        contentView.addSubview(titleTextLabel)
         registerCollectionViewCells()
-        view.addSubview(collectionView)
+        contentView.addSubview(collectionView)
         background.setTriangleColor(.black)
+        mainScrollView.contentInsetAdjustmentBehavior = .never
+        mainScrollView.alwaysBounceHorizontal = false
+        mainScrollView.alwaysBounceVertical = true
         setLayout()
+    }
+    
+    @objc func refresh() {
+       // Code to refresh collectionView
+        offset = 0
+        charactersArray.removeAll(keepingCapacity: true)
+        DispatchQueue.global().async { [weak self] in
+            self?.getMoreCharacters()
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.reloadData()
+                self?.mainScrollView.refreshControl?.endRefreshing()
+            }
+        }
     }
 
     private func setLayout() {
-        background.snp.makeConstraints { make in
+        
+        mainScrollView.snp.makeConstraints { make in
             make.edges.equalTo(view.snp.edges)
         }
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.height.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+        background.snp.makeConstraints { make in
+            make.edges.equalTo(contentView.snp.edges)
+        }
         logoImage.snp.makeConstraints { make in
-            make.centerX.equalTo(view.snp.centerX)
-            make.top.equalTo(view).offset(70.0)
+            make.centerX.equalTo(contentView.snp.centerX)
+            make.top.equalTo(contentView).offset(70.0)
             make.size.equalTo(CGSize(width: 140, height: 30))
         }
         titleTextLabel.snp.makeConstraints { make in
             make.top.equalTo(logoImage.snp.bottom).offset(20)
-            make.left.equalTo(view.snp.left)
-            make.right.equalTo(view.snp.right)
+            make.left.equalTo(contentView.snp.left)
+            make.right.equalTo(contentView.snp.right)
         }
         collectionView.snp.makeConstraints { make in
-            make.left.equalTo(view.snp.left)
-            make.right.equalTo(view.snp.right)
+            make.left.equalTo(contentView.snp.left)
+            make.right.equalTo(contentView.snp.right)
             make.top.equalTo(titleTextLabel.snp.bottom).offset(10)
-            make.bottom.equalTo(view.snp.bottom).offset(-30)
+            make.bottom.equalTo(contentView.snp.bottom).offset(-30)
         }
     }
 
@@ -120,7 +196,6 @@ final class ListViewController: UIViewController {
 extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if charactersArray.isEmpty { getMoreCharacters() }
         return charactersArray.count
     }
 
@@ -146,25 +221,26 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         present(fullScreenImageViewController, animated: true)
         self.fullScreenTransitionManager = fullScreenTransitionManager
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.row == charactersArray.count - 1 {
             // Last cell is visible
             getMoreCharacters()
         }
-    }
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard scrollView is UICollectionView else { return }
-        let centerPoint = CGPoint(x: scrollView.frame.size.width / 2 + scrollView.contentOffset.x,
-                                  y: scrollView.frame.size.height / 2 + scrollView.contentOffset.y)
+        let centerPoint = CGPoint(x: collectionView.frame.size.width / 2 + collectionView.contentOffset.x,
+                                  y: collectionView.frame.size.height / 2 + collectionView.contentOffset.y)
         if let indexPath = collectionView.indexPathForItem(at: centerPoint) {
             currentSelectedItemIndex = indexPath.row
             let cache = ImageCache.default
-            cache.retrieveImage(forKey: "\(charactersArray[indexPath.row].heroId)") { result in
+            cache.retrieveImage(forKey: "\(charactersArray[indexPath.row]?.heroId ?? 0)") { result in
                 switch result {
                 case .success(let value):
-                    self.background.setTriangleColor(value.image?.averageColor ?? .clear)
+                    DispatchQueue.global(qos: .background).async {
+                        let color = value.image?.averageColor ?? .clear
+                        DispatchQueue.main.async {
+                            self.background.setTriangleColor(color)
+                        }
+                    }
                 case .failure(let error):
                     print("Error: \(error)")
                 }

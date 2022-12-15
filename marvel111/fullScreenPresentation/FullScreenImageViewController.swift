@@ -1,4 +1,5 @@
 import UIKit
+import SnapKit
 
 class FullScreenImageViewController: UIViewController {
     
@@ -36,20 +37,23 @@ class FullScreenImageViewController: UIViewController {
         return heroDescriptionTextLabel
     }()
     
-    private lazy var imageViewLandscapeConstraint = heroImageView.heightToSuperview(isActive: false, usingSafeArea: true)
-    private lazy var imageViewPortraitConstraint = heroImageView.widthToSuperview(isActive: false, usingSafeArea: true)
-    
     init() {
         super.init(nibName: nil, bundle: nil)
     }
     
-    func setup(characterData: CharacterModel, tag: Int) {
+    func setup(characterData: CharacterModel?, tag: Int) {
         heroImageView.image = .init()
         wrapperView.tag = tag
-        getCharacters(id: characterData.heroId) { [weak self] in
-            self?.heroImageView.kf.setImage(with: URL(string: $0.first?.imageLink ?? "") ?? URL(string: "http://127.0.0.1"))
-            self?.heroNameTextLabel.text = $0.first?.name
-            self?.heroDescriptionTextLabel.text = $0.first?.description
+        guard let data = characterData else { return }
+        getCharacter(id: data.heroId) { [weak self] result in
+            switch result {
+            case .success(let characterModel):
+                self?.heroImageView.kf.setImage(with: URL(string: characterModel.imageLink) ?? URL(string: "http://127.0.0.1"))
+                self?.heroNameTextLabel.text = characterModel.name
+                self?.heroDescriptionTextLabel.text = characterModel.characterDescription
+            case .failure(let error):
+                NSLog(error.localizedDescription)
+            }
         }
 
     }
@@ -63,11 +67,6 @@ class FullScreenImageViewController: UIViewController {
         configureUI()
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        traitCollectionChanged(from: previousTraitCollection)
-    }
-    
     private func configureUI() {
         view.backgroundColor = .clear
         
@@ -77,12 +76,12 @@ class FullScreenImageViewController: UIViewController {
         wrapperView.addSubview(heroNameTextLabel)
         
         // The wrapper view will fill up the scroll view, and act as a target for pinch and pan event
-        wrapperView.edges(to: view)
-        wrapperView.width(to: view)
-        wrapperView.height(to: view)
-        
-        heroImageView.centerInSuperview()
-        heroImageView.edges(to: wrapperView)
+        wrapperView.snp.makeConstraints { make in
+            make.edges.equalTo(view)
+        }
+        heroImageView.snp.makeConstraints { make in
+            make.edges.equalTo(wrapperView)
+        }
         
         heroDescriptionTextLabel.snp.makeConstraints {
             $0.left.equalTo(wrapperView.snp.left).offset(textOffset)
@@ -93,18 +92,6 @@ class FullScreenImageViewController: UIViewController {
             $0.left.equalTo(wrapperView.snp.left).offset(textOffset)
             $0.right.equalTo(wrapperView.snp.right)
             $0.bottom.equalTo(heroDescriptionTextLabel.snp.top).offset(-10)
-        }
-    }
-    
-    private func traitCollectionChanged(from previousTraitCollection: UITraitCollection?) {
-        if traitCollection.horizontalSizeClass != .compact {
-            // Ladscape
-            imageViewPortraitConstraint.isActive = false
-            imageViewLandscapeConstraint.isActive = true
-        } else {
-            // Portrait
-            imageViewLandscapeConstraint.isActive = false
-            imageViewPortraitConstraint.isActive = true
         }
     }
 }

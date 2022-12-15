@@ -2,19 +2,21 @@ import UIKit
 import SwiftyJSON
 import Alamofire
 import CryptoKit
+import RealmSwift
 
 let baseUrl = "https://gateway.marvel.com/v1/public/characters"
 
-struct CharacterModel {
-    let name: String
-    let description: String
-    let heroId: Int
-    let imageLink: String
+final class CharacterModel: Object {
+    @Persisted var name: String
+    @Persisted var characterDescription: String
+    @Persisted(primaryKey: true) var heroId: Int
+    @Persisted var imageLink: String
     
-    init(id: Int, name: String, imagelink: String, description: String) {
+    convenience init(id: Int, name: String, imagelink: String, description: String) {
+        self.init()
         self.heroId = id
         self.name = name
-        self.description = description
+        self.characterDescription = description
         if imagelink.hasSuffix("jpg") {
             self.imageLink = imagelink
         } else {
@@ -23,26 +25,46 @@ struct CharacterModel {
     }
 }
 
-func getCharacters(id: Int = -1, offset: Int = 0, _ completion: @escaping ([CharacterModel]) -> Void) {
+func getCharacters(offset: Int = 0, _ completion: @escaping (Result<[CharacterModel], Error>) -> Void) {
     AF.request(
-        baseUrl + (id == -1 ? "" : "/\(id)"),
+        baseUrl,
         parameters: requestParams(offset: offset)
     ).responseDecodable(of: CharactersPayload.self) { response in
         switch response.result {
         case .success(let charactersPayload):
             let charactersDecodable = charactersPayload.data?.results
             var characterModelArray: [CharacterModel] = []
-            for character in charactersDecodable! {
-                let newModel = CharacterModel(id: character?.id ?? -1, name: character?.name ?? "",
-                                              imagelink: character?.thumbnail?.imageUrlString ?? "",
-                                              description: character?.description ?? "")
-                characterModelArray.append(newModel)
-            }
-            completion(characterModelArray)
+            charactersDecodable?.forEach { characterModelArray.append(createCharacterFromDecodable(character: $0)) }
+            completion(.success(characterModelArray))
         case .failure(let failure):
             NSLog(failure.localizedDescription)
+            completion(.failure(failure))
         }
     }
+}
+
+func getCharacter(id: Int, _ completion: @escaping (Result<CharacterModel, Error>) -> Void) {
+    AF.request(
+        baseUrl + "/\(id)",
+        parameters: requestParams()
+    ).responseDecodable(of: CharactersPayload.self) { response in
+        switch response.result {
+        case .success(let charactersPayload):
+            let charactersDecodable = charactersPayload.data?.results
+            var characterModelArray: [CharacterModel] = []
+            charactersDecodable?.forEach { characterModelArray.append(createCharacterFromDecodable(character: $0)) }
+            completion(.success(characterModelArray.first ?? .init()))
+        case .failure(let failure):
+            NSLog(failure.localizedDescription)
+            completion(.failure(failure))
+        }
+    }
+}
+
+func createCharacterFromDecodable(character: CharacterDecodable?) -> CharacterModel {
+    return CharacterModel(id: character?.id ?? -1, name: character?.name ?? "",
+                          imagelink: character?.thumbnail?.imageUrlString ?? "",
+                          description: character?.description ?? "")
 }
 
 struct CharactersPayload: Decodable {
