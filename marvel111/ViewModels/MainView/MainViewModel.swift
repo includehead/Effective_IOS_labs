@@ -29,9 +29,15 @@ final class MainViewModel: MainViewModelProtocol {
         repository.getCharacters(offset: self.offset) { [weak self] characterModelArray in
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
-                if !self.items.isEmpty {
-                    self.items.removeLast()
-                }
+                self.items.removeAll(where: {
+                    switch $0 {
+                    case .loading:
+                        return true
+                    case .hero:
+                        return false                        
+                    }
+                })
+                
                 let newHeroesArray = characterModelArray.map { CollectionCellItem.hero(model: $0) }
                 self.items.append(contentsOf: newHeroesArray)
                 self.offset += characterModelArray.count

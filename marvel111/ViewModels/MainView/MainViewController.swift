@@ -104,7 +104,7 @@ final class ListViewController: UIViewController {
         }
         logoImage.snp.makeConstraints { make in
             make.centerX.equalTo(contentView.snp.centerX)
-            make.top.equalTo(contentView).offset(70.0)
+            make.top.equalTo(contentView.safeAreaLayoutGuide).offset(10)
             make.size.equalTo(CGSize(width: 140, height: 30))
         }
         titleTextLabel.snp.makeConstraints { make in

@@ -11,14 +11,15 @@ class CharacterRepository {
     private let baseUrl = "https://gateway.marvel.com/v1/public/characters"
     
     func getCharacters(offset: Int = 0, _ completion: @escaping ([CharacterModel]) -> Void) {
-        guard isThereInternetConnection == true else { completion([]); return }
+        guard isThereInternetConnection == true else { completion(self.database.getAll()); return }
         AF.request(
             baseUrl,
             parameters: requestParams(offset: offset)
         ).responseDataDecodable(of: CharacterListPayload.self) { response in
             switch response.result {
             case .success(let charactersPayload):
-                guard let charactersDecodable = charactersPayload.data?.results else { completion([]); return }
+                debugPrint(response)
+                guard let charactersDecodable = charactersPayload.data?.results else { completion(self.database.getAll()); return }
                 let characterModelArray: [CharacterModel] = charactersDecodable.compactMap { self.createCharacterFromDecodable(character: $0) }
                 self.database.writeAll(characters: characterModelArray)
                 completion(characterModelArray)
@@ -30,19 +31,19 @@ class CharacterRepository {
         }
     }
 
-    func getCharacter(id: Int, _ completion: @escaping (Result<CharacterModel?, Error>) -> Void) {
+    func getCharacter(id: Int, _ completion: @escaping (CharacterModel?) -> Void) {
         AF.request(
             baseUrl + "/\(id)",
             parameters: requestParams()
         ).responseDataDecodable(of: CharacterListPayload.self) { response in
             switch response.result {
             case .success(let charactersPayload):
-                guard let charactersDecodable = charactersPayload.data?.results else { completion(.success(nil)); return }
+                guard let charactersDecodable = charactersPayload.data?.results else { completion(nil); return }
                 let characterModelArray: [CharacterModel] = charactersDecodable.compactMap { self.createCharacterFromDecodable(character: $0) }
-                completion(.success(characterModelArray.first))
+                completion(characterModelArray.first)
             case .failure(let failure):
                 NSLog(failure.localizedDescription)
-                completion(.failure(failure))
+                completion(nil)
             }
         }
     }
