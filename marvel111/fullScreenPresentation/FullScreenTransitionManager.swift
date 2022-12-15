@@ -1,5 +1,5 @@
 import UIKit
-import TinyConstraints
+import SnapKit
 
 // MARK: FullScreenPresentationController
 
@@ -10,17 +10,23 @@ final class FullScreenPresentationController: UIPresentationController {
         
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "xmark"), for: .normal)
-        button.addTarget(self, action: #selector(close), for: .primaryActionTriggered)
+        button.addAction(UIAction(title: "Refresh") { [weak self] _ in self?.presentedViewController.dismiss(animated: true) }, for: .touchUpInside)
         
         closeButtonBlurEffectView.contentView.addSubview(vibrancyEffectView)
         vibrancyEffectView.contentView.addSubview(button)
         
-        button.edgesToSuperview()
-        vibrancyEffectView.edgesToSuperview()
+        button.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        vibrancyEffectView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         
         closeButtonBlurEffectView.layer.cornerRadius = 24
         closeButtonBlurEffectView.clipsToBounds = true
-        closeButtonBlurEffectView.size(CGSize(width: 48, height: 48))
+        closeButtonBlurEffectView.snp.makeConstraints { make in
+            make.size.equalTo(CGSize(width: 48, height: 48))
+        }
         
         return closeButtonBlurEffectView
     }()
@@ -32,10 +38,6 @@ final class FullScreenPresentationController: UIPresentationController {
     }()
     
     private let blurEffect = UIBlurEffect(style: .systemThinMaterial)
-    
-    @objc private func close(_ button: UIButton) {
-        presentedViewController.dismiss(animated: true)
-    }
 }
 
 // MARK: UIPresentationController
@@ -46,9 +48,13 @@ extension FullScreenPresentationController {
         
         containerView.addSubview(backgroundView)
         containerView.addSubview(closeButtonContainer)
-        backgroundView.edgesToSuperview()
-        closeButtonContainer.topToSuperview(offset: 16, usingSafeArea: true)
-        closeButtonContainer.trailingToSuperview(offset: 16, usingSafeArea: true)
+        backgroundView.snp.makeConstraints { make in
+            make.leading.top.trailing.bottom.equalToSuperview()
+        }
+        closeButtonContainer.snp.makeConstraints { make in
+            make.top.equalTo(backgroundView.safeAreaLayoutGuide).offset(6)
+            make.right.equalTo(backgroundView).inset(10)
+        }
         
         guard let transitionCoordinator = presentingViewController.transitionCoordinator else { return }
         
@@ -157,8 +163,11 @@ final class FullScreenAnimationController: NSObject, UIViewControllerAnimatedTra
             else {
                 return transitionContext.completeTransition(false)
             }
-            transitionContext.containerView.insertSubview(toViewController.view, at: 1) // In between the presentations controller's background and close button
-            toViewController.view.edgesToSuperview()
+            // In between the presentations controller's background and close button
+            transitionContext.containerView.insertSubview(toViewController.view, at: 1)
+            toViewController.view.snp.makeConstraints { make in
+                make.leading.top.trailing.bottom.equalToSuperview()
+            }
             toViewController.view.layoutIfNeeded()
             propertyAnimator = presentAnimator(with: transitionContext, animating: toViewController)
         case .dismiss:
