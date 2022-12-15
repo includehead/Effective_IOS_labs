@@ -1,6 +1,4 @@
 import UIKit
-import TinyConstraints
-import Kingfisher
 
 class FullScreenImageViewController: UIViewController {
     
@@ -22,6 +20,8 @@ class FullScreenImageViewController: UIViewController {
         let heroNameTextLabel = UILabel()
         heroNameTextLabel.textColor = .white
         heroNameTextLabel.font = UIFont(name: "Roboto-Black", size: 37)
+        heroNameTextLabel.shadowColor = .black
+        heroNameTextLabel.shadowOffset = CGSize(width: 5, height: 5)
         return heroNameTextLabel
     }()
     
@@ -31,6 +31,8 @@ class FullScreenImageViewController: UIViewController {
         heroDescriptionTextLabel.font = UIFont(name: "Roboto-Black", size: 34)
         heroDescriptionTextLabel.lineBreakMode = .byWordWrapping
         heroDescriptionTextLabel.numberOfLines = 0
+        heroDescriptionTextLabel.shadowColor = .black
+        heroDescriptionTextLabel.shadowOffset = CGSize(width: 5, height: 5)
         return heroDescriptionTextLabel
     }()
     
@@ -41,14 +43,15 @@ class FullScreenImageViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    func setup(heroData: HeroModel, tag: Int) {
+    func setup(characterData: CharacterModel, tag: Int) {
         heroImageView.image = .init()
         wrapperView.tag = tag
-        heroImageView.kf.setImage(with: heroData.imageLink ?? URL(string: ""))
-        heroNameTextLabel.text = heroData.name
-        heroDescriptionTextLabel.text = """
-            Marvel Entertainment, LLC is an American entertainment company founded in June 1998 and based in New York City
-            """
+        getCharacters(id: characterData.heroId) { [weak self] in
+            self?.heroImageView.kf.setImage(with: URL(string: $0.first?.imageLink ?? "") ?? URL(string: "http://127.0.0.1"))
+            self?.heroNameTextLabel.text = $0.first?.name
+            self?.heroDescriptionTextLabel.text = $0.first?.description
+        }
+
     }
     
     required init?(coder: NSCoder) {

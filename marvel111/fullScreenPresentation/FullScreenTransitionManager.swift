@@ -157,7 +157,8 @@ final class FullScreenAnimationController: NSObject, UIViewControllerAnimatedTra
             else {
                 return transitionContext.completeTransition(false)
             }
-            transitionContext.containerView.insertSubview(toViewController.view, at: 1) // In between the presentations controller's background and close button
+            // In between the presentations controller's background and close button
+            transitionContext.containerView.insertSubview(toViewController.view, at: 1)
             toViewController.view.edgesToSuperview()
             toViewController.view.layoutIfNeeded()
             propertyAnimator = presentAnimator(with: transitionContext, animating: toViewController)

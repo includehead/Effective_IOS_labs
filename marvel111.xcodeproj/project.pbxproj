@@ -25,16 +25,20 @@
 		554AF28F2901762F003CC67A /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 554AF27F2901762E003CC67A /* Roboto-Bold.ttf */; };
 		554AF292290179B2003CC67A /* PagingCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554AF291290179B2003CC67A /* PagingCollectionViewLayout.swift */; };
 		554AF2942901D931003CC67A /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554AF2932901D931003CC67A /* CollectionViewCell.swift */; };
-		554AF2962905A828003CC67A /* HeroModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554AF2952905A828003CC67A /* HeroModel.swift */; };
-		554AF2982905A957003CC67A /* HeroArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554AF2972905A957003CC67A /* HeroArray.swift */; };
+		554AF2962905A828003CC67A /* CharacterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554AF2952905A828003CC67A /* CharacterModel.swift */; };
+		55AB4DFE29328DFC0046AE7F /* TinyConstraints in Frameworks */ = {isa = PBXBuildFile; productRef = 55AB4DFD29328DFC0046AE7F /* TinyConstraints */; };
 		55B9FF4F2900937E00F64053 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B9FF4E2900937E00F64053 /* AppDelegate.swift */; };
 		55B9FF582900937F00F64053 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B9FF572900937F00F64053 /* Assets.xcassets */; };
 		55B9FF5B2900937F00F64053 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55B9FF592900937F00F64053 /* LaunchScreen.storyboard */; };
 		55B9FF6C290098C100F64053 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B9FF6B290098C100F64053 /* ListViewController.swift */; };
 		55F9D53A290AA1BE00D02DEA /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 55F9D539290AA1BE00D02DEA /* Kingfisher */; };
 		55F9D53C2911AFCF00D02DEA /* FullScreenTransitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F9D53B2911AFCF00D02DEA /* FullScreenTransitionManager.swift */; };
-		55F9D53F2911B15E00D02DEA /* TinyConstraints in Frameworks */ = {isa = PBXBuildFile; productRef = 55F9D53E2911B15E00D02DEA /* TinyConstraints */; };
 		55F9D5412911B6CC00D02DEA /* FullScreenImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F9D5402911B6CC00D02DEA /* FullScreenImageViewController.swift */; };
+		55F9D5442912E4A600D02DEA /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 55F9D5432912E4A600D02DEA /* Alamofire */; };
+		55F9D5472912F56300D02DEA /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 55F9D5462912F56300D02DEA /* SwiftyJSON */; };
+		55F9D54E2917666900D02DEA /* UIImageColors in Frameworks */ = {isa = PBXBuildFile; productRef = 55F9D54D2917666900D02DEA /* UIImageColors */; };
+		55F9D558291DA3E100D02DEA /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 55F9D557291DA3E100D02DEA /* Realm */; };
+		55F9D55A291DA3E100D02DEA /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 55F9D559291DA3E100D02DEA /* RealmSwift */; };
 		F7BDDA9D2906627400D4E7FE /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BDDA9C2906627400D4E7FE /* BackgroundView.swift */; };
 		F7BDDA9F2906764400D4E7FE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7BDDA9E2906764400D4E7FE /* Constants.swift */; };
 		F7BDDAA229068BD000D4E7FE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F7BDDAA129068BD000D4E7FE /* SnapKit */; };
@@ -72,8 +76,7 @@
 		554AF27F2901762E003CC67A /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		554AF291290179B2003CC67A /* PagingCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagingCollectionViewLayout.swift; sourceTree = "<group>"; };
 		554AF2932901D931003CC67A /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
-		554AF2952905A828003CC67A /* HeroModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroModel.swift; sourceTree = "<group>"; };
-		554AF2972905A957003CC67A /* HeroArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroArray.swift; sourceTree = "<group>"; };
+		554AF2952905A828003CC67A /* CharacterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterModel.swift; sourceTree = "<group>"; };
 		55B9FF4B2900937E00F64053 /* marvel111.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = marvel111.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B9FF4E2900937E00F64053 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		55B9FF572900937F00F64053 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -91,9 +94,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55F9D55A291DA3E100D02DEA /* RealmSwift in Frameworks */,
+				55F9D558291DA3E100D02DEA /* Realm in Frameworks */,
+				55F9D54E2917666900D02DEA /* UIImageColors in Frameworks */,
+				55AB4DFE29328DFC0046AE7F /* TinyConstraints in Frameworks */,
 				55F9D53A290AA1BE00D02DEA /* Kingfisher in Frameworks */,
+				55F9D5442912E4A600D02DEA /* Alamofire in Frameworks */,
 				F7BDDAA229068BD000D4E7FE /* SnapKit in Frameworks */,
-				55F9D53F2911B15E00D02DEA /* TinyConstraints in Frameworks */,
+				55F9D5472912F56300D02DEA /* SwiftyJSON in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,11 +131,19 @@
 			path = font;
 			sourceTree = "<group>";
 		};
+		55AB4DFC29328DEC0046AE7F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		55B9FF422900937D00F64053 = {
 			isa = PBXGroup;
 			children = (
 				55B9FF4D2900937E00F64053 /* marvel111 */,
 				55B9FF4C2900937E00F64053 /* Products */,
+				55AB4DFC29328DEC0046AE7F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -143,21 +159,44 @@
 			isa = PBXGroup;
 			children = (
 				55B9FF4E2900937E00F64053 /* AppDelegate.swift */,
-				554AF2952905A828003CC67A /* HeroModel.swift */,
-				554AF2972905A957003CC67A /* HeroArray.swift */,
+				55F9D54929131CDD00D02DEA /* characterModel */,
 				F7BDDA9E2906764400D4E7FE /* Constants.swift */,
-				55B9FF6B290098C100F64053 /* ListViewController.swift */,
-				554AF2932901D931003CC67A /* CollectionViewCell.swift */,
-				55F9D53B2911AFCF00D02DEA /* FullScreenTransitionManager.swift */,
-				55F9D5402911B6CC00D02DEA /* FullScreenImageViewController.swift */,
-				F7BDDA9C2906627400D4E7FE /* BackgroundView.swift */,
-				554AF291290179B2003CC67A /* PagingCollectionViewLayout.swift */,
+				55F9D54B29155EA500D02DEA /* mainView */,
+				55F9D54A2913D6A200D02DEA /* fullScreenPresentation */,
 				55B9FF572900937F00F64053 /* Assets.xcassets */,
 				554AF29029017639003CC67A /* font */,
 				55B9FF592900937F00F64053 /* LaunchScreen.storyboard */,
 				55B9FF5C2900937F00F64053 /* Info.plist */,
 			);
 			path = marvel111;
+			sourceTree = "<group>";
+		};
+		55F9D54929131CDD00D02DEA /* characterModel */ = {
+			isa = PBXGroup;
+			children = (
+				554AF2952905A828003CC67A /* CharacterModel.swift */,
+			);
+			path = characterModel;
+			sourceTree = "<group>";
+		};
+		55F9D54A2913D6A200D02DEA /* fullScreenPresentation */ = {
+			isa = PBXGroup;
+			children = (
+				55F9D53B2911AFCF00D02DEA /* FullScreenTransitionManager.swift */,
+				55F9D5402911B6CC00D02DEA /* FullScreenImageViewController.swift */,
+			);
+			path = fullScreenPresentation;
+			sourceTree = "<group>";
+		};
+		55F9D54B29155EA500D02DEA /* mainView */ = {
+			isa = PBXGroup;
+			children = (
+				55B9FF6B290098C100F64053 /* ListViewController.swift */,
+				554AF2932901D931003CC67A /* CollectionViewCell.swift */,
+				F7BDDA9C2906627400D4E7FE /* BackgroundView.swift */,
+				554AF291290179B2003CC67A /* PagingCollectionViewLayout.swift */,
+			);
+			path = mainView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,7 +220,12 @@
 			packageProductDependencies = (
 				F7BDDAA129068BD000D4E7FE /* SnapKit */,
 				55F9D539290AA1BE00D02DEA /* Kingfisher */,
-				55F9D53E2911B15E00D02DEA /* TinyConstraints */,
+				55F9D5432912E4A600D02DEA /* Alamofire */,
+				55F9D5462912F56300D02DEA /* SwiftyJSON */,
+				55F9D54D2917666900D02DEA /* UIImageColors */,
+				55F9D557291DA3E100D02DEA /* Realm */,
+				55F9D559291DA3E100D02DEA /* RealmSwift */,
+				55AB4DFD29328DFC0046AE7F /* TinyConstraints */,
 			);
 			productName = marvel111;
 			productReference = 55B9FF4B2900937E00F64053 /* marvel111.app */;
@@ -215,6 +259,10 @@
 				F7BDDAA029068BD000D4E7FE /* XCRemoteSwiftPackageReference "SnapKit" */,
 				55F9D538290AA1BE00D02DEA /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				55F9D53D2911B15E00D02DEA /* XCRemoteSwiftPackageReference "TinyConstraints" */,
+				55F9D5422912E4A600D02DEA /* XCRemoteSwiftPackageReference "Alamofire" */,
+				55F9D5452912F56300D02DEA /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				55F9D54C2917666900D02DEA /* XCRemoteSwiftPackageReference "UIImageColors" */,
+				55F9D556291DA3E100D02DEA /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = 55B9FF4C2900937E00F64053 /* Products */;
 			projectDirPath = "";
@@ -285,9 +333,8 @@
 				554AF292290179B2003CC67A /* PagingCollectionViewLayout.swift in Sources */,
 				55F9D53C2911AFCF00D02DEA /* FullScreenTransitionManager.swift in Sources */,
 				F7BDDA9D2906627400D4E7FE /* BackgroundView.swift in Sources */,
-				554AF2982905A957003CC67A /* HeroArray.swift in Sources */,
 				55B9FF6C290098C100F64053 /* ListViewController.swift in Sources */,
-				554AF2962905A828003CC67A /* HeroModel.swift in Sources */,
+				554AF2962905A828003CC67A /* CharacterModel.swift in Sources */,
 				55F9D5412911B6CC00D02DEA /* FullScreenImageViewController.swift in Sources */,
 				F7BDDA9F2906764400D4E7FE /* Constants.swift in Sources */,
 			);
@@ -525,6 +572,38 @@
 				minimumVersion = 4.0.0;
 			};
 		};
+		55F9D5422912E4A600D02DEA /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		55F9D5452912F56300D02DEA /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		55F9D54C2917666900D02DEA /* XCRemoteSwiftPackageReference "UIImageColors" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jathu/UIImageColors";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		55F9D556291DA3E100D02DEA /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		F7BDDAA029068BD000D4E7FE /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -536,15 +615,40 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		55AB4DFD29328DFC0046AE7F /* TinyConstraints */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55F9D53D2911B15E00D02DEA /* XCRemoteSwiftPackageReference "TinyConstraints" */;
+			productName = TinyConstraints;
+		};
 		55F9D539290AA1BE00D02DEA /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 55F9D538290AA1BE00D02DEA /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
 		};
-		55F9D53E2911B15E00D02DEA /* TinyConstraints */ = {
+		55F9D5432912E4A600D02DEA /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 55F9D53D2911B15E00D02DEA /* XCRemoteSwiftPackageReference "TinyConstraints" */;
-			productName = TinyConstraints;
+			package = 55F9D5422912E4A600D02DEA /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		55F9D5462912F56300D02DEA /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55F9D5452912F56300D02DEA /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+		55F9D54D2917666900D02DEA /* UIImageColors */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55F9D54C2917666900D02DEA /* XCRemoteSwiftPackageReference "UIImageColors" */;
+			productName = UIImageColors;
+		};
+		55F9D557291DA3E100D02DEA /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55F9D556291DA3E100D02DEA /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		55F9D559291DA3E100D02DEA /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55F9D556291DA3E100D02DEA /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 		F7BDDAA129068BD000D4E7FE /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

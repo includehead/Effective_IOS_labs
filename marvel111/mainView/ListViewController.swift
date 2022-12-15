@@ -1,9 +1,32 @@
 import UIKit
 import SnapKit
+import Alamofire
+import UIImageColors
+import Kingfisher
+
+extension UIImage {
+    var averageColor: UIColor? {
+        guard let inputImage = CIImage(image: self) else { return nil }
+        let extentVector = CIVector(x: inputImage.extent.origin.x, y: inputImage.extent.origin.y,
+                                    z: inputImage.extent.size.width, w: inputImage.extent.size.height)
+
+        guard let filter = CIFilter(name: "CIAreaAverage", parameters: [kCIInputImageKey: inputImage, kCIInputExtentKey: extentVector])
+        else { return nil }
+        guard let outputImage = filter.outputImage else { return nil }
+
+        var bitmap = [UInt8](repeating: 0, count: 4)
+        let context = CIContext(options: [.workingColorSpace: kCFNull!])
+        context.render(outputImage, toBitmap: &bitmap, rowBytes: 4, bounds: CGRect(x: 0, y: 0, width: 1, height: 1), format: .RGBA8, colorSpace: nil)
+
+        return UIColor(red: CGFloat(bitmap[0]) / 255, green: CGFloat(bitmap[1]) / 255,
+                       blue: CGFloat(bitmap[2]) / 255, alpha: CGFloat(bitmap[3]) / 255)
+    }
+}
 
 final class ListViewController: UIViewController {
-
-    private let heroArray = HeroArray()
+    
+    private var offset: Int = 0
+    
     private let background = BackgroundView(frame: .zero)
     private var currentSelectedItemIndex = 0
     
@@ -41,6 +64,17 @@ final class ListViewController: UIViewController {
         collectionView.delegate = self
         return collectionView
     }()
+    
+    private lazy var charactersArray = [CharacterModel]() {
+        didSet {collectionView.reloadData()}
+    }
+    
+    private lazy var getMoreCharacters: () -> Void = {
+        getCharacters(offset: self.offset) { [weak self] in
+            self?.charactersArray.append(contentsOf: $0)
+            self?.offset += $0.count
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +85,7 @@ final class ListViewController: UIViewController {
         view.addSubview(titleTextLabel)
         registerCollectionViewCells()
         view.addSubview(collectionView)
-        background.setTriangleColor(heroArray.get(0).color)
+        background.setTriangleColor(.black)
         setLayout()
     }
 
@@ -83,10 +117,11 @@ final class ListViewController: UIViewController {
     }
 }
 
-extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return heroArray.count()
+        if charactersArray.isEmpty { getMoreCharacters() }
+        return charactersArray.count
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -97,19 +132,26 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             return .init()
         }
         let tag = indexPath.item + 1
-        cell.setup(heroData: heroArray.get(indexPath.item), and: tag)
+        cell.setup(characterData: charactersArray[indexPath.item], and: tag)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let tag = indexPath.row + 1
-        let heroData = heroArray.get(indexPath.item)
+        let characterData = charactersArray[indexPath.item]
         let fullScreenTransitionManager = FullScreenTransitionManager(anchorViewTag: tag)
-        fullScreenImageViewController.setup(heroData: heroData, tag: tag)
+        fullScreenImageViewController.setup(characterData: characterData, tag: tag)
         fullScreenImageViewController.modalPresentationStyle = .custom
         fullScreenImageViewController.transitioningDelegate = fullScreenTransitionManager
         present(fullScreenImageViewController, animated: true)
         self.fullScreenTransitionManager = fullScreenTransitionManager
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == charactersArray.count - 1 {
+            // Last cell is visible
+            getMoreCharacters()
+        }
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -118,7 +160,15 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
                                   y: scrollView.frame.size.height / 2 + scrollView.contentOffset.y)
         if let indexPath = collectionView.indexPathForItem(at: centerPoint) {
             currentSelectedItemIndex = indexPath.row
-            background.setTriangleColor(heroArray.get(indexPath.row).color)
+            let cache = ImageCache.default
+            cache.retrieveImage(forKey: "\(charactersArray[indexPath.row].heroId)") { result in
+                switch result {
+                case .success(let value):
+                    self.background.setTriangleColor(value.image?.averageColor ?? .clear)
+                case .failure(let error):
+                    print("Error: \(error)")
+                }
+            }
         }
     }
 }

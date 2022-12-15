@@ -24,15 +24,18 @@ final class CollectionViewCell: UICollectionViewCell {
         setUpLayout()
     }
 
-    func setup(heroData: HeroModel, and tag: Int) {
+    func setup(characterData: CharacterModel, and tag: Int) {
         imageView.image = .init()
         imageView.layoutIfNeeded()
         let processor = DownsamplingImageProcessor(size: imageView.bounds.size)
                      |> RoundCornerImageProcessor(cornerRadius: 20)
+        let resource = ImageResource(downloadURL: URL(string: characterData.imageLink) ?? URL(string: "http://127.0.0.1")!, cacheKey: "\(characterData.heroId)")
         imageView.kf.setImage(
-            with: heroData.imageLink ?? URL.init(string: ""),
+            with: resource,
+            placeholder: UIImage(named: "placeholder"),
             options: [
-                .processor(processor)
+                .processor(processor),
+                .cacheOriginalImage
             ]
         ) {
             switch $0 {
@@ -43,7 +46,7 @@ final class CollectionViewCell: UICollectionViewCell {
             }
         }
         imageView.tag = tag
-        textLabel.text = heroData.name
+        textLabel.text = characterData.name
     }
 
     private func setUpLayout() {
@@ -51,6 +54,7 @@ final class CollectionViewCell: UICollectionViewCell {
         addSubview(textLabel)
         textLabel.snp.makeConstraints {
             $0.left.equalTo(self.snp.left).offset(20)
+            $0.right.equalTo(self.snp.right).offset(-10)
             $0.top.equalTo(self.snp.bottom).offset(-50)
         }
         imageView.snp.makeConstraints {
