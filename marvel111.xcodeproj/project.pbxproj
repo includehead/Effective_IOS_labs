@@ -25,7 +25,7 @@
 		554AF28F2901762F003CC67A /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 554AF27F2901762E003CC67A /* Roboto-Bold.ttf */; };
 		554AF292290179B2003CC67A /* PagingCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554AF291290179B2003CC67A /* PagingCollectionViewLayout.swift */; };
 		554AF2942901D931003CC67A /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554AF2932901D931003CC67A /* CollectionViewCell.swift */; };
-		554AF2962905A828003CC67A /* HeroData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554AF2952905A828003CC67A /* HeroData.swift */; };
+		554AF2962905A828003CC67A /* HeroModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554AF2952905A828003CC67A /* HeroModel.swift */; };
 		554AF2982905A957003CC67A /* HeroArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 554AF2972905A957003CC67A /* HeroArray.swift */; };
 		55B9FF4F2900937E00F64053 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B9FF4E2900937E00F64053 /* AppDelegate.swift */; };
 		55B9FF582900937F00F64053 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B9FF572900937F00F64053 /* Assets.xcassets */; };
@@ -68,7 +68,7 @@
 		554AF27F2901762E003CC67A /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		554AF291290179B2003CC67A /* PagingCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagingCollectionViewLayout.swift; sourceTree = "<group>"; };
 		554AF2932901D931003CC67A /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
-		554AF2952905A828003CC67A /* HeroData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroData.swift; sourceTree = "<group>"; };
+		554AF2952905A828003CC67A /* HeroModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroModel.swift; sourceTree = "<group>"; };
 		554AF2972905A957003CC67A /* HeroArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroArray.swift; sourceTree = "<group>"; };
 		55B9FF4B2900937E00F64053 /* marvel111.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = marvel111.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B9FF4E2900937E00F64053 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -135,7 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				55B9FF4E2900937E00F64053 /* AppDelegate.swift */,
-				554AF2952905A828003CC67A /* HeroData.swift */,
+				554AF2952905A828003CC67A /* HeroModel.swift */,
 				554AF2972905A957003CC67A /* HeroArray.swift */,
 				F7BDDA9E2906764400D4E7FE /* Constants.swift */,
 				55B9FF6B290098C100F64053 /* ListViewController.swift */,
@@ -249,7 +249,7 @@
 				F7BDDA9D2906627400D4E7FE /* BackgroundView.swift in Sources */,
 				554AF2982905A957003CC67A /* HeroArray.swift in Sources */,
 				55B9FF6C290098C100F64053 /* ListViewController.swift in Sources */,
-				554AF2962905A828003CC67A /* HeroData.swift in Sources */,
+				554AF2962905A828003CC67A /* HeroModel.swift in Sources */,
 				F7BDDA9F2906764400D4E7FE /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
